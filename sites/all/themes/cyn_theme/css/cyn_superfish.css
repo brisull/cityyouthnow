@@ -1,0 +1,28 @@
+
+
+.sidebar .sf-menu.sf-style-cyn-theme li {
+    background-color: transparent;
+}
+.sidebar .sf-menu.sf-style-cyn-theme li a, 
+.sidebar .sf-menu.sf-style-cyn-theme li a:hover {
+    color: #60513A !important;
+}
+.sidebar .sf-menu.sf-style-cyn-theme li li {
+    background-color: #FFF;
+}
+.sidebar .sf-menu.sf-style-cyn-theme li li:hover {
+    background-color: #CDDFE4;
+}
+
+.sidebar .sf-menu.sf-style-cyn-theme a {
+    padding: 0.25em .5em;
+}
+
+.region-sidebar-first .block-title {
+    background-color: #FFF;
+}
+
+/* Main Menu */
+#menu-bar li a:link, #menu-bar li a:hover, #menu-bar li a:focus, #menu-bar li a:visited, #menu-bar li a:active, #menu-bar li a.active, #menu-bar li a:visited:hover {
+    color: #60513A;
+}
