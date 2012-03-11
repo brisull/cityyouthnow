@@ -9,10 +9,11 @@
 
 ;----------// Style sheets
   stylesheets[all][] = color/colors.css
+  stylesheets[all][] = css/cyn_theme.settings.style.css
   stylesheets[all][] = css/cyn_theme.css
-  stylesheets[all][] = css/cyn_theme.settings.style.css
-  stylesheets[all][] = css/cyn_theme.settings.style.css
-
+  
+  scripts[] = js/cyn.js
+  
 ;----------// Regions
   ; This theme uses Gpanels from Adaptivetheme core (the ones starting with "GP").
   ; You can add more Gpanel regions - see the "gpanels" directory in Adaptivetheme

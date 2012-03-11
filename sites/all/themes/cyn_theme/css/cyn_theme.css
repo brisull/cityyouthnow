@@ -5,6 +5,8 @@ body,
 #header hgroup {
   padding: 0;
   margin: 0;
+  background: none;
+  background-color: #FFF;
 }
 #columns {
   padding-top: 15px;
@@ -87,6 +89,7 @@ var {
 blockquote,q {
   font-style: italic;
   quotes: "" "";
+  
 }
 blockquote {
   margin: 0 0 1.5em;
@@ -95,7 +98,8 @@ blockquote {
 blockquote:before,
 blockquote:after,
 q:before,
-q:after {
+q:after
+{
   content: "";
 }
 blockquote p {
@@ -228,6 +232,7 @@ a.active:focus {
 }
 #branding {
   float: left;
+  margin-left: 10px;
   padding: 0;
   width: 49.5%; /* Adjust this if you have a very long site name or large logo */
 }
@@ -325,7 +330,6 @@ a.active:focus {
 }
 #menu-bar ul li a {
   font-weight: bold;
-  padding: 0 25px 0 15px;
 }
 #menu-bar ul.menu li a:hover {
   background: transparent;
@@ -649,7 +653,7 @@ div.forum-topic-navigation a.topic-previous {
 /* Footer, Feed icon */
 #footer {
   font-size: 0.92em;
-  text-align: center;
+  text-align: left;
   border: none;
 }
 #footer-inner {
@@ -659,13 +663,18 @@ div.forum-topic-navigation a.topic-previous {
 #footer a {
   text-decoration: none;
   font-weight: normal;
+  color: #3C83BB;
 }
 #footer .block {
-  padding: 10px 0 0;
+  padding: 0;
 }
 #footer .block-title {
   text-align: left;
   padding: 0 10px;
+}
+#footer .block .block-content {
+    margin: 0;
+    padding: 0;
 }
 #footer .block .block-content > ul.menu {
   padding: 0;
@@ -1307,6 +1316,183 @@ body.wysiwygeditor {
 .view-gmap img,
 #getlocations_map_canvas img {
   max-width: none;
+}
+
+#main-content {
+    border: 0;
+    border-left: 1px solid #AA9E90;
+    border-right: 1px solid #AA9E90;
+    padding: 0px 5px;
+}
+
+#main-content .article-teaser {
+    border: 0;
+}
+
+.article .article-title {
+    border: 0;
+}
+
+/* columns */
+#columns {
+    padding-top: 0;   
+}
+#columns .sidebar, #columns  #main-content {
+    padding-top: 15px;    
+}
+
+#columns .region-sidebar-first {
+    padding-top: 10px;   
+}
+
+/* sidebars */
+.sidebar {
+    padding-bottom: 20px;
+}
+.region-sidebar-first .block-title {
+    background-color: #FFF;
+}
+
+.sidebar .block-quotes {
+    padding: 0;
+    margin: 0;  
+    width: 100%;
+    color: #F48300;
+    font-size: 95%;
+}
+
+.sidebar .block-quotes .body p:before,
+.sidebar .block-quotes .body p:after {
+    content: "\"";
+}
+.sidebar .block-quotes .quotes-author {
+    text-align: right;
+    float: right;
+}
+.sidebar .block-quotes .body {
+    font-style: italic;
+    text-align: left;
+}
+
+.sidebar .block-title, .region-sidebar-second .pane-title {
+    color: #FF6600;
+    margin: 0;
+    font-size: 1.0em;
+    padding: 2px 10px;
+    background-color: transparent;
+}
+.region-sidebar-second .pane-title {
+    padding: 2px 0;
+}
+.region-sidebar-second form {
+    margin-bottom: -10px;
+}
+.region-sidebar-second .block-inner {
+   margin: 0;
+   padding: 0;
+}
+.sidebar .block-content {
+    padding: 0px 10px 5px;
+    margin: 0;
+}
+.sidebar .block-content ul.menu {
+    margin-left: 5px;
+}
+
+
+.region-sidebar-second .block-content *:first-child {
+    margin-top: 0px;
+}
+
+/* main content */
+#main-content #page-title {
+    text-transform: uppercase;
+}
+#main-content #tasks {
+    position: relative;
+}
+#main-content #tasks ul {
+    position: absolute;
+    right: 0px;
+    top: -30px;
+}
+
+#main-content #tasks ul.primary li a {
+    border: 1px solid #C8C8C9;
+    background-color: #CCC;
+}
+
+#main-content #tasks ul.primary li a:hover {
+    background-color: #DADADA;
+}
+
+
+
+/* header */
+#header .region-header {
+
+    width: 60%;
+}
+
+#header .region-header .block-inner,
+#header .region-header,
+#header .region-header p,
+#header .region-header .block-content
+{
+    margin: 0;
+    padding: 0;
+}
+#header .region-header img { 
+    position: absolute;
+    right: 0px;
+}
+
+#header .region-header .block-title { 
+    display: none;
+}
+
+#header .region-header .block-inner { 
+    background-color: transparent;
+    color: #FFF;
+}
+
+#header .header-inner { 
+    background-image: none;
+}
+
+#header .header-inner p, #header .header-inner cite { 
+   display: block;
+   text-align: right;
+   font-style: italic;
+   font-size: 110%;
+}
+#header .header-inner p {
+   padding-right: 230px;
+}
+
+#header .header-inner cite:before {
+    content: "—";
+}
+
+/* search bar */
+.block-search {
+    text-align: right;
+    width: 300px;
+    position: absolute;
+    right: 10px;
+    top: -90px;
+}
+
+#search-block-form .form-text {
+    width: 200px;
+}
+
+/* footer */
+#footer {
+    background: none;
+    background-color: transparent;
+    color: #555555;
+    border-top: 1px solid #AA9E90;
 }
 
 

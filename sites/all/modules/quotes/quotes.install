@@ -1,0 +1,323 @@
+<?php
+
+/**
+ * @file
+ *   Handles installation and updates for the quotes module.
+ *
+ * @copyright Copyright (c) 2003-2007 Jim Riggs.  All rights reserved.
+ * @author Jim Riggs <drupal at jim and lissa dot com>
+ */
+
+//********************************************************************
+//* Drupal Hooks
+//********************************************************************
+
+/**
+ * Implements hook_schema().
+ */
+function quotes_schema() {
+  $schema = array();
+  $schema['quotes'] = array(
+    'module' => 'Quotes',
+    'description' => 'Extra node data.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'Node identifier.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'disp-width' => '10',
+        ),
+      'vid' => array(
+        'description' => 'Version identifier.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'disp-width' => '10',
+        ),
+      'aid' => array(
+        'description' => 'Author identifier.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'disp-width' => '10',
+        ),
+      'citation' => array(
+        'description' => 'Source of the quote.',
+        'type' => 'text',
+        'not null' => FALSE,
+        ),
+      'promote' => array(
+        'description' => 'Status.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        ),
+      ),
+    'primary key' => array('vid'),
+    'indexes' => array(
+      'quotes_nid' => array('nid'),
+      'quotes_promote' => array('promote'),
+      'quotes_aid' => array('aid'),
+      ),
+    );
+
+  $schema['quotes_blocks'] = array(
+    'module' => 'Quotes',
+    'description' => 'Quotes blocks data.',
+    'fields' => array(
+      'bid' => array(
+        'description' => 'Block number',
+        'type' => 'serial',
+        'not null' => TRUE,
+        ),
+      'block_type' => array(
+        'description' => 'Type of block',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        ),
+      'vid' => array(
+        'description' => 'Version id',
+        'type' => 'int',
+        'not null' => TRUE,
+        ),
+      'count' => array(
+        'description' => 'Number of quotes in the block.',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 1,
+        ),
+      'cron_interval' => array(
+        'description' => 'Cron frequency',
+        'type' => 'int',
+        'not null' => TRUE,
+        ),
+      'cron_step' => array(
+        'description' => 'Cron step',
+        'type' => 'int',
+        'not null' => TRUE,
+        ),
+      'cron_last' => array(
+        'description' => 'Last Cron run time',
+        'type' => 'int',
+        'not null' => TRUE,
+        ),
+      'show_titles' => array(
+        'description' => 'Show titles.',
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => FALSE,
+        'default' => 0,
+        'disp-width' => '6',
+        ),
+      'show_citation' => array(
+        'description' => 'Show citation.',
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => FALSE,
+        'default' => 0,
+        ),
+      'max_length' => array(
+        'description' => 'Maximum length of quote in block.',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+        'disp-width' => '11',
+        ),
+      'rand_freq' => array(
+        'description' => 'Display frequency for random blocks.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 100,
+        ),
+      'name' => array(
+        'description' => 'Name of this block',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        ),
+      'nid_filter' => array(
+        'description' => 'Node filter',
+        'type' => 'text',
+        'not null' => TRUE,
+        ),
+      'aid_filter' => array(
+        'description' => 'Author filter',
+        'type' => 'text',
+        'not null' => TRUE,
+        ),
+      'rid_filter' => array(
+        'description' => 'Role filter',
+        'type' => 'text',
+        'not null' => TRUE,
+        ),
+      'uid_filter' => array(
+        'description' => 'User filter',
+        'type' => 'text',
+        'not null' => TRUE,
+        ),
+      'tid_filter' => array(
+        'description' => 'Term filter',
+        'type' => 'text',
+        'not null' => TRUE,
+        ),
+      'view_text' => array(
+        'description' => 'Text for the "view" link.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        ),
+      'more_text' => array(
+        'description' => 'Text for the "more" link.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        ),
+      ),
+    'primary key' => array('bid'),
+    'unique keys' => array(
+      'name' => array('name')),
+    );
+
+  $schema['quotes_authors'] = array(
+    'module' => 'Quotes',
+    'description' => 'Quotes authors data.',
+    'fields' => array(
+      'aid' => array(
+        'description' => 'Author identifier.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'disp-width' => '10',
+        ),
+      'name' => array(
+        'description' => 'Author of the quote.',
+        'type' => 'text',
+        'not null' => TRUE,
+        ),
+      'bio' => array(
+        'description' => "Author's biography.",
+        'type' => 'text',
+        'not null' => FALSE,
+        ),
+      ),
+    'primary key' => array('aid'),
+    'unique keys' => array(
+      'name' => array(array('name', 255)),
+      ),
+    );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_update_last_removed().
+ *
+ */
+function quotes_update_last_removed() {
+  // Removed the 5.x and 6.x version of quotes, including database updates.
+  // The next update function is quotes_update_7001().
+  return 6107;
+}
+
+/**
+ * Implements hook_install().
+ *
+ */
+function quotes_install() {
+  node_types_rebuild();
+  $types = node_type_get_types();
+  node_add_body_field($types['quotes']);
+
+  // Set default variables
+  variable_set('quotes_author_bio', FALSE);
+  variable_set('quotes_author_link', FALSE);
+  variable_set('quotes_block_citation', FALSE);
+  variable_set('quotes_leader', '&mdash;');
+  variable_set('quotes_quick_nav', TRUE);
+  variable_set('quotes_per_page', 10);
+  variable_set('quotes_show_myquotes', TRUE);
+  variable_set('quotes_showlink', TRUE);
+  variable_set('quotes_user_recent', FALSE);
+  variable_set('quotes_edit_link', TRUE);
+}
+
+/**
+ * Return a structured array defining the fields created by this content type.
+ *
+ * This is packaged in a function so it can be used in both hook_install()
+ * and hook_uninstall().
+ *
+ * Examples can be found in quotes_installed_fields.txt
+ */
+function _quotes_installed_fields() {
+  $t = get_t();
+  return array(
+  );
+}
+
+/**
+ * Return a structured array defining the instances for this content type.
+ *
+ * The instance lets Drupal know which widget to use to allow the user to enter
+ * data and how to react in different view modes.  Uses are to display a
+ * page that uses a custom "quotes_list" view mode.
+ *
+ * This is provided as a function so that it can be used in both hook_install()
+ * and hook_uninstall().
+ *
+ * Examples can be found in quotes_installed_instances.txt
+ */
+function _quotes_installed_instances() {
+  $t = get_t();
+  return array(
+  );
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function quotes_uninstall() {
+  // Gather all the content that might have been created while this
+  // module was enabled.  Simple selects still use db_query().
+  // http://api.drupal.org/api/function/db_query/7
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+  $result = db_query($sql, array(':type' => 'quotes'));
+  $nids = array();
+  foreach ($result as $row) {
+    $nids[] = $row->nid;
+  }
+  // Delete all the nodes at once
+  // http://api.drupal.org/api/function/node_delete_multiple/7
+  node_delete_multiple($nids);
+  // Loop over each of the fields defined by this module and delete
+  // all instances of the field, their data, and the field itself.
+  // http://api.drupal.org/api/function/field_delete_field/7
+  foreach (array_keys(_quotes_installed_fields()) as $field) {
+    field_delete_field($field);
+  }
+  // Loop over any remaining field instances attached to the node_example
+  // content type (such as the body field) and delete them individually.
+  // http://api.drupal.org/api/function/field_delete_field/7
+  $instances = field_info_instances('node', 'quotes');
+  foreach ($instances as $instance_name => $instance) {
+    field_delete_instance($instance);
+  }
+  // Delete our content type
+  // http://api.drupal.org/api/function/node_type_delete/7
+  node_type_delete('quotes');
+  // Purge all field infromation
+  // http://api.drupal.org/api/function/field_purge_batch/7
+  field_purge_batch(1000);
+  // Delete all our variable we set.
+  db_query("DELETE FROM {variable} WHERE name LIKE ('quotes_%')");
+  // Delete all our blocks.
+  db_query("DELETE FROM {block} WHERE module='quotes'");
+  // Clear the cache.
+  cache_clear_all();
+  // Include a uninstall message
+  drupal_set_message(st('quotes module uninstalled.'));
+}

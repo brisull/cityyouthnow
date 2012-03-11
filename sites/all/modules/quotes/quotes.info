@@ -1,0 +1,25 @@
+name = "Quotes"
+description = "Allows users to maintain personal lists of quotations and display quotes in one or more blocks."
+core = 7.x
+dependencies[] = block
+
+files[] = quotes.admin.inc
+files[] = quotes.install
+files[] = quotes.module
+files[] = quotes.node.inc
+files[] = quotes.user.inc
+files[] = quotes.views.inc
+files[] = views_handler_field_quotes.inc
+; Information added by drupal.org packaging script on 2011-10-11
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "quotes"
+datestamp = "1318294011"
+
+
+; Information added by drupal.org packaging script on 2012-01-10
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "quotes"
+datestamp = "1326155986"
+

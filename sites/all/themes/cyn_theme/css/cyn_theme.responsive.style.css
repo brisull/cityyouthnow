@@ -6,6 +6,7 @@
     box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
   }
   #header {
+    display: none;
     max-height: 1000px;
     padding: 0;
     background-image: none;
@@ -72,6 +73,8 @@
     box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
   }
   #header {
+      
+    display: none;
     max-height: 1000px;
     padding: 0;
     background-image: none;
@@ -114,8 +117,8 @@
     background: rgba(0, 0, 0, 0.5);
   }
   #menu-bar .menu-wrapper > ul > li {
-    display: block;
-    float: none;
+    display: inline-block;
+    float: left;
     margin: 0;
     padding: 0;
     overflow: hidden !important;
@@ -151,6 +154,7 @@
     padding: 22px 0 0;
   }
   #header {
+    display: none;
     max-height: 1000px;
     padding: 0;
     background-image: none;

@@ -1,28 +1,55 @@
-
-
-.sidebar .sf-menu.sf-style-cyn-theme li {
+.sidebar #block-system-main-menu li {
     background-color: transparent;
 }
-.sidebar .sf-menu.sf-style-cyn-theme li a, 
-.sidebar .sf-menu.sf-style-cyn-theme li a:hover {
-    color: #60513A !important;
-}
-.sidebar .sf-menu.sf-style-cyn-theme li li {
-    background-color: #FFF;
-}
-.sidebar .sf-menu.sf-style-cyn-theme li li:hover {
-    background-color: #CDDFE4;
+.sidebar #block-system-main-menu li a{
+    color: #60513A;
+    text-decoration: none;
 }
 
-.sidebar .sf-menu.sf-style-cyn-theme a {
+.sidebar #block-system-main-menu li a:hover {
+    color: #3C83BB;
+}
+
+
+.sidebar #block-system-main-menu li li {
+    background-color: transparent;
+    
+}
+.sidebar #block-system-main-menu li li:hover {
+    background-color: #CDDFE4;
+}
+.sidebar #block-system-main-menu li.active-trail li:hover {
+    background-color: transparent;
+}
+
+.sidebar #block-system-main-menu a {
     padding: 0.25em .5em;
 }
 
-.region-sidebar-first .block-title {
-    background-color: #FFF;
+.sidebar #block-system-main-menu li.active-trail a {
+    color: #3C83BB;
+    background-color: transparent;
+}
+.sidebar #block-system-main-menu li a.active-trail:hover,
+.sidebar #block-system-main-menu li.active-trail a:hover{
+    background-color: transparent;
+    text-decoration: none;
+    color: #FF6600;
 }
 
+
 /* Main Menu */
-#menu-bar li a:link, #menu-bar li a:hover, #menu-bar li a:focus, #menu-bar li a:visited, #menu-bar li a:active, #menu-bar li a.active, #menu-bar li a:visited:hover {
+#menu-bar ul li a {
+    padding: 0 20px 0 5px;
+    text-transform: uppercase;
+}
+#menu-bar li a:link, #menu-bar li a:hover, #menu-bar li a:focus, #menu-bar li a:visited, #menu-bar li a:active, #menu-bar li a.active, #menu-bar li a:visited:hover,
+#menu-bar li.active-trail li a:link, #menu-bar li.active-trail li a:hover, #menu-bar li.active-trail li a:focus, #menu-bar li.active-trail li a:visited, #menu-bar li.active-trail li a:active, #menu-bar li.active-trail li a.active, #menu-bar li.active-trail li a:visited:hover
+{
     color: #60513A;
 }
+#menu-bar li.active-trail a:link, #menu-bar li.active-trail a:hover, #menu-bar li.active-trail a:focus, #menu-bar li.active-trail a:visited, #menu-bar li.active-trail a:active, #menu-bar li.active-trail a.active, #menu-bar li.active-trail a:visited:hover {
+    color: #3C83BB;
+}
+
+
