@@ -12,7 +12,9 @@
   stylesheets[all][] = css/cyn_theme.settings.style.css
   stylesheets[all][] = css/cyn_theme.css
   
+  
   scripts[] = js/cyn.js
+  
   
 ;----------// Regions
   ; This theme uses Gpanels from Adaptivetheme core (the ones starting with "GP").

@@ -1,3 +1,120 @@
+/* Superfish */
+ul.sf-menu li ul {
+  display: none; /* Prevent sub menus from momentarily displaying */
+}
+/* sf-horizontal - classic drop menu style */
+.nav .block-superfish {
+  padding: 0;
+  margin: 0;
+}
+ul.sf-menu.sf-horizontal {
+  padding: 0;
+}
+ul.sf-menu.sf-horizontal a {
+  height: 24px;
+  line-height: 24px;
+  padding: 0 10px;
+  border-left: none;
+  border-top: none;
+}
+ul.sf-menu.sf-horizontal a:hover,
+ul.sf-menu.sf-horizontal a:focus {
+  text-decoration: none;
+}
+ul.sf-menu.sf-horizontal a.active,
+ul.sf-menu.sf-navbar a.active,
+ul.sf-menu.sf-vertical a.active {
+  font-weight: 400;
+}
+.nav ul.sf-menu.sf-horizontal li {
+  margin: 0;
+  padding: 0;
+}
+ul.sf-menu.sf-horizontal li:hover ul,
+ul.sf-menu.sf-horizontal li.sfHover ul {
+}
+ul.sf-menu.sf-horizontal a.sf-with-ul,
+ul.sf-menu.sf-navbar a.sf-with-ul {
+  padding-right: 25px;
+}
+#menu-bar .contextual-links-wrapper {
+  left: 0;
+  right: auto;
+}
+/* .sf-navbar - drop down nav bar style */
+ul.sf-menu.sf-navbar {
+  padding: 0;
+  position: absolute;
+  z-index: 99;
+}
+ul.sf-menu.sf-navbar a {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 10px;
+  border-left: none;
+  border-top: none;
+}
+ul.sf-menu.sf-navbar a:hover,
+ul.sf-menu.sf-navbar a:focus,
+ul.sf-menu.sf-navbar ul ul a:hover,
+ul.sf-menu.sf-navbar ul ul a:focus,
+ul.sf-menu.sf-navbar ul ul ul a:hover,
+ul.sf-menu.sf-navbar ul ul ul a:focus,
+ul.sf-menu.sf-navbar ul ul ul ul a:hover,
+ul.sf-menu.sf-navbar ul ul ul ul a:focus {
+  text-decoration: none;
+}
+ul.sf-menu.sf-navbar ul a:hover,
+ul.sf-menu.sf-navbar ul a:focus  {
+  text-decoration: underline;
+}
+ul.sf-menu.sf-navbar li {
+  margin: 0;
+  padding: 0;
+}
+ul.sf-menu.sf-navbar li:hover ul,
+ul.sf-menu.sf-navbar li.sfHover ul {
+  top: 20px;
+}
+ul.sf-menu.sf-vertical ul,
+ul.sf-menu.sf-navbar ul ul,
+ul.sf-menu.sf-navbar ul ul ul,
+ul.sf-menu.sf-navbar ul ul ul ul {
+  width: 13em;
+}
+ul.sf-menu.sf-navbar ul ul ul,
+ul.sf-menu.sf-navbar ul ul ul ul {
+  left: 100% !important;
+}
+/* sf-vertical - flyout menus for sidebars */
+ul.sf-menu.sf-vertical a {
+  color: #fff !important; /* Tweak this to suit your color scheme */
+}
+ul.sf-menu.sf-vertical,
+ul.sf-menu.sf-vertical ul,
+ul.sf-menu.sf-vertical ul ul,
+ul.sf-menu.sf-vertical ul ul ul {
+  padding: 0;
+  margin: 0;
+}
+.nav .block-content {
+  padding: 5px 0 12px;
+  margin: 0;
+}
+ul.sf-menu.sf-vertical,
+ul.sf-menu.sf-vertical li {
+  width: 100%;
+}
+ul.sf-menu.sf-vertical li:hover ul,
+ul.sf-menu.sf-vertical li.sfHover ul {
+  left: 100%; /* match ul width */
+  top: 0;
+}
+ul.sf-menu.sf-vertical a:hover,
+ul.sf-menu.sf-vertical a:focus {
+  text-decoration: none;
+}
+
 .sidebar #block-system-main-menu li {
     background-color: transparent;
 }

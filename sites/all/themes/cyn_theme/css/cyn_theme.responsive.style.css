@@ -47,9 +47,14 @@
   }
   #menu-bar .menu-wrapper > ul > li {
     display: block;
-    float: none;
+    float: left;
+    font-size: 80%;
     margin: 0;
     overflow: hidden !important;
+  }
+  .block-search {
+       clear: both;
+       float: none;
   }
   #menu-bar .sf-menu {
     height: auto;
@@ -64,6 +69,21 @@
   .ie6-7 .mbp-c #menu-bar .menu-wrapper  ul,
   .ie6-7 .mbp-c #menu-bar .menu-wrapper  .sf-menu li {
     left: auto;
+  }
+  #header .header-inner {
+    padding-bottom: 5px;
+  }
+  .front .region-sidebar-first, .front .region-sidebar-second {
+    margin: 0 !important;    
+  }
+  .front .content-inner {
+    margin: 0 !important;
+    height: auto;
+  }
+  .block-search {
+      clear: both;
+      float: none;
+      top: -30px;
   }
 }
 
@@ -142,6 +162,25 @@
   .ie6-7 .mbp-c #menu-bar .menu-wrapper  .sf-menu li {
     left: auto;
   }
+  
+  #header .header-inner {
+    padding-bottom: 5px;
+  }
+  .front .region-sidebar-first, .front .region-sidebar-second {
+    margin: 0 !important;    
+  }
+  .front .content-inner {
+    margin: 0 !important;
+    height: auto;
+  }
+  
+  .block-search {
+      clear: both;
+      float: none;
+      top: -20px;
+      right: none;
+      left: 10px;
+  }
 }
 
 /* Tablet portrait */
@@ -169,6 +208,14 @@
   #header .header-inner {
     padding-bottom: 5px;
   }
+  .front .region-sidebar-first, .front .region-sidebar-second {
+    margin: 0 !important;    
+  }
+  .front .content-inner {
+    margin: 0 !important;
+    height: auto;
+  }
+  
   
 }
 
