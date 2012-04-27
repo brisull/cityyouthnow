@@ -62,7 +62,7 @@ html {
   font-size: 81.3%; /* 16px x 81.3% = 13px */
 }
 body {
-  line-height: 1.5;
+  line-height: 1.6em;
 }
 img {
   max-width: 100%;
@@ -1375,7 +1375,14 @@ body.wysiwygeditor {
     color: #FFF;
 }
 
-#header .header-inner { 
+#header .header-inner .article-content, #header .header-inner .article {
+    padding: 0;
+    margin: 0;
+    line-height: 1.6em;
+}
+
+
+#header .header-inner {
     background-image: none;
 }
 
