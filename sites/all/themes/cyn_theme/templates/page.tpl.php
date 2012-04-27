@@ -20,8 +20,35 @@
   	<?php print render($page['menu_bar']); ?> <!-- /menu bar -->
     <header id="header" class="clearfix" role="banner">
       <div class="header-inner clearfix">
-        
-        <?php print render($page['header']); ?> <!-- /header region -->
+		<?php
+		
+		try {
+			if ( !empty( $node ) ) {
+				if( $field = field_get_items('node', $node, 'field_header', $node->language) ) {
+					// echo '<pre>'; print_r( $field ); echo '</pre>';
+					$nid = $field['0']['target_id'];
+					$delta = 0;
+					$language = 'und';
+					
+					$entity = entity_load('node', array($nid));
+					$header_content = $entity[$nid]->body[$language][$delta]['value'];
+				}
+			}
+		}
+		catch (Exception $e) {
+			// Do nothing	
+		}
+		?>
+        <?php 
+        	if ( !empty( $header_content ) ) {
+        		echo '<div class="region region-header"><div class="block-inner clearfix">';
+				print render($header_content);
+				echo '</div></div>';
+			}
+			else {
+				print render($page['header']);
+			}
+		?> <!-- /header region -->
       </div>
     </header> <!-- /header -->
 
@@ -75,8 +102,8 @@
             </header>
           <?php endif; ?>
           <?php print render($title_suffix); ?>
-
-          <?php print render($page['content']); ?> <!-- /content -->
+          
+		  <?php print render($page['content']); ?> <!-- /content -->
 
           <?php print $feed_icons; ?> <!-- /feed icons -->
 

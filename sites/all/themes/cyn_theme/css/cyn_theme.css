@@ -7,6 +7,7 @@ body,
   margin: 0;
   background: none;
   background-color: #FFF;
+  color: #60513A;
 }
 #columns {
   padding-top: 15px;
@@ -217,12 +218,14 @@ h1#page-title {
 a,
 a.active {
   text-decoration: none;
+  color: #3C83BB;
 }
 a:hover,
 a.active:hover,
 a:focus,
 a.active:focus {
   text-decoration: underline;
+  color: #FF6600;
 }
 
 /* Header */
@@ -303,44 +306,7 @@ a.active:focus {
   width: 160px;
 }
 
-/* Menu-bar */
-#menu-bar {
-  clear: both;
-  min-height: 32px;
-  line-height: 32px;
-  padding: 0;
-  z-index: 100; /* Needed so Superfish menus appear over flash & slideshows in IE7 */
-  position: relative;
-}
-#menu-bar ul {
-  padding: 0 15px;
-}
-#menu-bar ul ul {
-  padding: 0;
-}
-#menu-bar ul,
-#menu-bar ul li {
-  margin: 0;
-  list-style: none;
-  list-style-image: none;
-}
-#menu-bar ul li {
-  float: left;
-  padding: 0;
-}
-#menu-bar ul li a {
-  font-weight: bold;
-}
-#menu-bar ul.menu li a:hover {
-  background: transparent;
-}
-#menu-bar .block,
-#menu-bar .block-inner,
-#menu-bar .block-inner .block-content  {
-  background: transparent;
-  padding: 0;
-  margin: 0;
-}
+
 /**
  * Hide additional menu levels for normal menu blocks - I can't think of a better
  * way of handling these - you should really use http://drupal.org/project/menu_block
@@ -354,9 +320,19 @@ a.active:focus {
   margin: 0 0 15px 0;
   padding: 0;
 }
+#main-content .block-content, #main-content .block-title {
+    padding: 0;
+}
 #main-content .article-teaser {
   padding: 10px;
 }
+
+#main-content p {
+  margin-top: 0.4em;
+  margin-bottom: 1.2em;
+  padding: 0;
+}
+
 .article-full-view .article h1.article-title,
 .article h1.article-title {
   margin: 0;
@@ -517,7 +493,7 @@ article .field-type-image.field-label-inline .field-label {
   margin: 0;
 }
 #block-system-main {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 /* Fields */
@@ -569,10 +545,15 @@ li a:active,
 li a:hover {
   font-weight: normal;
 }
-.item-list ul {
-}
+
 .item-list ul li {
-  margin-left: 1em;
+  margin-left: 0;
+  list-style: none;
+  padding: 5px 0;
+  border-bottom: 1px dotted #DDDDDD;
+}
+.item-list ul li.last, .item-list ul li.views-row-first.views-row-last {
+    border: 0;
 }
 .item-list .title {
   font-size: 1em;
@@ -615,7 +596,13 @@ ul.action-links {
 #aggregator h3 {
   margin-top: 1em;
 }
-
+.block-aggregator a, .block-aggregator a:link, .block-aggregator a:visited {
+    color: #60513A;
+    padding-bottom: 5px;
+}
+.block-aggregator a:hover {
+    text-decoration: none;
+}
 /* Forum */
 #forum {
   margin: 15px 0;
@@ -1214,6 +1201,24 @@ body.wysiwygeditor {
     border: 0;
 }
 
+#main-content .region-content h1 {
+    color: #336699;
+    font-size: 1.2em;
+}
+
+#main-content .region-content h2, #main-content .block .block-title {
+    background-color: transparent;
+    color: #336699;
+    font-size: 1.1em;
+}
+
+#main-content .region-content h3 {
+    font-size: 1.0em;
+    color: #336699;
+}
+
+#main-content .block-views { margin-top: 0px; margin-bottom: 25px; }
+
 .article .article-title {
     border: 0;
 }
@@ -1225,6 +1230,9 @@ body.wysiwygeditor {
 #columns .sidebar, #columns  #main-content {
     padding-top: 15px;    
 }
+.sidebar .view-events-calendar h3 {
+    padding-left: 0;   
+}
 
 #columns .region-sidebar-first {
     padding-top: 10px;   
@@ -1234,9 +1242,14 @@ body.wysiwygeditor {
 .sidebar {
     padding-bottom: 20px;
 }
+
+
 .block-region-sidebar-second  {
     border-bottom: 1px solid #AA9E90;
-    margin-left: 10px;
+    margin: 0px 5px;
+}
+.sidebar .ddblock-content .slide {
+    text-align: center;   
 }
 .block-region-sidebar-second:last-child {
     border: 0;   
@@ -1251,6 +1264,11 @@ body.wysiwygeditor {
     width: 100%;
     color: #F48300;
     font-size: 95%;
+}
+
+.front .block-quotes {
+    color: #60513A;
+    margin: 5px;
 }
 
 .sidebar .block-quotes .body p:before,
@@ -1270,7 +1288,7 @@ body.wysiwygeditor {
     color: #FF6600;
     margin: 0;
     font-size: 1.0em;
-    padding: 15px 10px 2px;
+    padding: 15px 0px 2px;
     background-color: transparent;
 }
 .region-sidebar-second .pane-title {
@@ -1284,11 +1302,15 @@ body.wysiwygeditor {
    padding: 0;
 }
 .sidebar .block-content {
-    padding: 0px 10px 5px;
+    padding: 0px 5px 5px;
     margin: 0;
 }
 .sidebar .block-content ul.menu {
-    margin-left: 5px;
+    margin-left: 0px;
+}
+
+.sidebar .block-content ul.menu ul{
+    margin-left: 10px;
 }
 
 
@@ -1422,7 +1444,7 @@ body.wysiwygeditor {
 .front #header .region-header {
       padding: 100px 30px;
       float: none;
-      font-size: 130%;
+      font-size: 120%;
       width: 80%;
 }
 
@@ -1434,3 +1456,41 @@ body.wysiwygeditor {
     display: none;   
 }
 
+.page-type-about-us-page .article-type-webform .author-datetime, .page-type-about-us-page .article-type-webform .article-title {
+    display: none;
+}
+
+.block-quotes .body p {
+    margin-left: 0;
+}
+
+ul.float-left-list {
+      width: 250px;
+      float: left;
+      list-style: none;
+      margin: 8px 0px;
+}
+/* Special cases for Donors list page */
+.donor-cell {
+    width: 30%;
+    vertical-align: top;
+    padding-right: 20px;
+}
+
+.view-donors h3 {
+    border-bottom: 1px solid #AA9E90;
+    margin-top: 20px;
+    padding: 5px 0;
+}
+
+.page-node-133 .region-sidebar-second {
+    display: none;   
+}
+
+.page-node-133 .content-inner {
+    margin-right: 20px !important;
+}
+
+.page-node-133 #main-content {
+    border-right: 0 !important;
+}

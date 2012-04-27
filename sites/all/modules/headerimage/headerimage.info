@@ -1,0 +1,5 @@
+name = Header Image
+description = Displays an image in a header block.
+core = 7.x
+version = 7.x-1.0-alpha7
+package = Other

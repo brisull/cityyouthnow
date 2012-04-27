@@ -6,6 +6,7 @@ ul.sf-menu li ul {
 .nav .block-superfish {
   padding: 0;
   margin: 0;
+  font-family: arial, helvetica, sans-serif;
 }
 ul.sf-menu.sf-horizontal {
   padding: 0;
@@ -74,7 +75,7 @@ ul.sf-menu.sf-navbar li {
 }
 ul.sf-menu.sf-navbar li:hover ul,
 ul.sf-menu.sf-navbar li.sfHover ul {
-  top: 20px;
+  top: 25px;
 }
 ul.sf-menu.sf-vertical ul,
 ul.sf-menu.sf-navbar ul ul,
@@ -144,9 +145,14 @@ ul.sf-menu.sf-vertical a:focus {
 }
 
 .sidebar #block-system-main-menu li.active-trail a {
-    color: #3C83BB;
+    /*color: #3C83BB;*/
     background-color: transparent;
 }
+
+.sidebar #block-system-main-menu a.active {
+    color: #3C83BB;
+}
+
 .sidebar #block-system-main-menu li a.active-trail:hover,
 .sidebar #block-system-main-menu li.active-trail a:hover{
     background-color: transparent;
@@ -160,13 +166,67 @@ ul.sf-menu.sf-vertical a:focus {
     padding: 0 20px 0 5px;
     text-transform: uppercase;
 }
-#menu-bar li a:link, #menu-bar li a:hover, #menu-bar li a:focus, #menu-bar li a:visited, #menu-bar li a:active, #menu-bar li a.active, #menu-bar li a:visited:hover,
-#menu-bar li.active-trail li a:link, #menu-bar li.active-trail li a:hover, #menu-bar li.active-trail li a:focus, #menu-bar li.active-trail li a:visited, #menu-bar li.active-trail li a:active, #menu-bar li.active-trail li a.active, #menu-bar li.active-trail li a:visited:hover
-{
-    color: #60513A;
+
+#menu-bar ul li li a {
+    text-transform: capitalize ;
 }
+
+#menu-bar li a:hover, #menu-bar li a:visited:hover,
 #menu-bar li.active-trail a:link, #menu-bar li.active-trail a:hover, #menu-bar li.active-trail a:focus, #menu-bar li.active-trail a:visited, #menu-bar li.active-trail a:active, #menu-bar li.active-trail a.active, #menu-bar li.active-trail a:visited:hover {
     color: #3C83BB;
 }
 
+#menu-bar li li a:hover, #menu-bar li li a:visited:hover,
+#menu-bar li a:link, #menu-bar li a:focus, #menu-bar li a:visited, #menu-bar li a:active, #menu-bar li a.active,
+#menu-bar li.active-trail li a:link, #menu-bar li.active-trail li a:hover, #menu-bar li.active-trail li a:focus, #menu-bar li.active-trail li a:visited, #menu-bar li.active-trail li a:active, #menu-bar li.active-trail li a.active, #menu-bar li.active-trail li a:visited:hover
+{
+    color: #60513A;
+}
+
+
+#menu-bar {
+  clear: both;
+  min-height: 32px;
+  line-height: 32px;
+  padding: 0;
+  z-index: 100; /* Needed so Superfish menus appear over flash & slideshows in IE7 */
+  position: relative;
+}
+#menu-bar ul {
+  padding: 0 15px;
+}
+#menu-bar ul ul {
+  padding: 0;
+  top: 35px;
+  border: 0;
+}
+#menu-bar ul ul ul {
+    top: 0px;
+}
+#menu-bar ul,
+#menu-bar ul li {
+  margin: 0;
+  list-style: none;
+  list-style-image: none;
+}
+#menu-bar ul li {
+  float: left;
+  padding: 0;
+}
+#menu-bar ul li a {
+  font-weight: bold;
+}
+#menu-bar ul li li a {
+  font-weight: normal;
+}
+#menu-bar ul.menu li a:hover {
+  background: transparent;
+}
+#menu-bar .block,
+#menu-bar .block-inner,
+#menu-bar .block-inner .block-content  {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
 

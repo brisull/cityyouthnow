@@ -393,7 +393,7 @@ dl.node-type-list dt {
   font-weight: 400;
   line-height: 2.5;
   padding: 0 25px;
-  width: 9em;
+  width: 15em;
 }
 dl.admin-list dd,
 dl.node-type-list dd {
@@ -406,6 +406,13 @@ dl.admin-list.compact dt,
 dl.node-type-list.compact dt {
   width: auto;
   float: none;
+}
+dl.admin-list dd:after,
+dl.node-type-list dd:after {
+    content: ".";
+    clear: both;
+    visibility: hidden;
+    height: 0px;
 }
 div.admin-panel dl,
 div.admin-panel dt {

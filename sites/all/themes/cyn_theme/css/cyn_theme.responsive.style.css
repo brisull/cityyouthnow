@@ -85,6 +85,14 @@
       float: none;
       top: -30px;
   }
+  #main-content iframe {
+      width:310px;
+      height: 187px;
+  }
+  
+  .front .region-sidebar-first {
+    border: 0 !important;   
+  }
 }
 
 /* Smartphone landscape */
@@ -177,9 +185,18 @@
   .block-search {
       clear: both;
       float: none;
-      top: -20px;
+      top: -22px;
       right: none;
       left: 10px;
+  }
+  
+  #main-content iframe {
+      width:310px;
+      height: 187px;
+  }
+  
+  .front .region-sidebar-first {
+    border: 0 !important;   
   }
 }
 
@@ -216,6 +233,17 @@
     height: auto;
   }
   
+  #main-content iframe {
+      width: 560px;
+      height: 315px;
+  }
+  .front .region-sidebar-first {
+      border: 0 !important;
+      width:45% !important;
+  }
+  .front .region-sidebar-second {
+      width: 45% !important;
+  }
   
 }
 
