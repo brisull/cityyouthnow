@@ -35,3 +35,8 @@
     <?php print $page; ?>
   </div>
 </div>
+<script type="text/javascript">
+jQuery(document).ready( function() {
+		parent.window.overlay.overlayIsLoaded(jQuery("form:first")) ;
+});
+</script>

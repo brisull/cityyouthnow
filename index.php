@@ -14,6 +14,13 @@
 /**
  * Root directory of Drupal installation.
  */
+// if test=true, set a cookie that will tell settings.php to point to the test db
+if ( !empty($_GET['test']) ) {
+	setcookie("test", $_GET['test'], time() + 3600*3);
+	header("Location:/");
+}
+
+
 define('DRUPAL_ROOT', getcwd());
 
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';

@@ -53,7 +53,16 @@
     </header> <!-- /header -->
 
     
-
+    <?php
+    if ( !empty($_COOKIE['test']) && $_COOKIE['test'] == 'true' ) {
+		$messages .= '<div class="messages status">
+		<h2 class="element-invisible">Using Test Site</h2>
+		 <ul>
+		  <li>You are viewing the testing version of the site. Click <a href="/?test=false">here</a> to go to the live site.</li>
+		 </ul>
+		</div>';
+	}
+	?>
     <?php print $messages; ?> <!-- /message -->
     <?php print render($page['help']); ?> <!-- /help -->
 
