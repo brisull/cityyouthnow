@@ -40,7 +40,6 @@ class MigrateDestinationFile extends MigrateDestinationEntity {
       'fid' => array(
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => TRUE,
         'description' => 'file_managed ID',
       ),
     );
@@ -51,9 +50,6 @@ class MigrateDestinationFile extends MigrateDestinationEntity {
    *
    * @param boolean $copy_file
    *  TRUE to have the file copied from the provided URI to Drupal. Defaults to FALSE.
-   * @param boolean $copy_blob
-   *  TRUE to the binary value written to filesystem at $copy_destination. When this
-   *  is TRUE, $copy_file should be FALSE. Defaults to FALSE.
    * @param string $copy_destination
    *  If $copy_file is TRUE, the scheme/directory to use as the destination for the copied file.
    *  Defaults to 'public://'.
@@ -64,11 +60,14 @@ class MigrateDestinationFile extends MigrateDestinationEntity {
    * @param boolean $preserve_files
    *  TRUE will add a self-reference to each file created, so it is not deleted
    *  on rollback of fields referencing it.
+   * @param boolean $copy_blob
+   *  TRUE to the binary value written to filesystem at $copy_destination. When this
+   *  is TRUE, $copy_file should be FALSE. Defaults to FALSE.
    */
   static public function options($copy_file, $copy_destination, $language,
-      $text_format, $preserve_files = FALSE) {
-    return compact('copy_file', 'copy_blob', 'copy_destination', 'language',
-      'text_format', 'preserve_files');
+      $text_format, $preserve_files = FALSE, $copy_blob = FALSE) {
+    return compact('copy_file', 'copy_destination', 'language',
+      'text_format', 'preserve_files', 'copy_blob');
   }
 
   /**
@@ -128,6 +127,7 @@ class MigrateDestinationFile extends MigrateDestinationEntity {
    *  Raw source data object - passed through to prepare handlers.
    */
   public function prepare($entity, stdClass $source_row) {
+    parent::prepare($entity, $source_row);
     if (!empty($this->copyBlob)) {
       if (empty($entity->filename)) {
         throw new MigrateException("You must map to filename field for copy_blob migrations.");
@@ -260,19 +260,12 @@ class MigrateDestinationFile extends MigrateDestinationEntity {
     }
 
     migrate_instrument_start('file_save');
-    // Save this file to DB.
-    if ($existing_files = file_load_multiple(array(), array('uri' => $file->uri))) {
-      // Existing record exists. Reuse it.
-      $file = reset($existing_files);
-      // TODO: Do we really need to save again? Copied from File Field.
-      // $file = file_save($file);
-    }
-    else {
+    if (!file_load_multiple(array(), array('uri' => $file->uri))) {
       // Get this orphaned file into the file table.
       $file->fid = NULL;
       $file->status |= FILE_STATUS_PERMANENT; // Save a write in file_field_presave().
-      $file = file_save($file);
     }
+    $file = file_save($file);
     migrate_instrument_stop('file_save');
     $this->complete($file, $row);
 

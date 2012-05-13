@@ -63,6 +63,10 @@ function quotes_node_access($node, $op, $account) {
         }
         break;
       case 'update':
+        if (user_access('edit own quotes', $account) && ($account->uid == $node->uid)) {
+          return NODE_ACCESS_ALLOW;
+        }
+        break;
       case 'delete':
         if (user_access('edit own quotes', $account) && ($account->uid == $node->uid)) {
           return NODE_ACCESS_ALLOW;
@@ -81,14 +85,6 @@ function quotes_node_access($node, $op, $account) {
 
   // Returning nothing from this function would have the same effect.
   return NODE_ACCESS_IGNORE;
-}
-
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
-function quotes_add_access() {
-  return (user_access('create quotes') || user_access('edit own quotes'));
 }
 
 function _quotes_myquotes_access() {
@@ -304,6 +300,62 @@ function quotes_init() {
  */
 function quotes_help($path, $args) {
   $output = NULL;
+  $fieldset = array(
+    '#title' => t('Notes for importing'),
+    '#value' => t('
+      <ul>
+      <li>Tab-separated quotes should appear one quote per line in the format <em>
+        <span style="color: blue;">quote</span>
+        <span style="color: red;">&lt;tab&gt;</span>
+        <span style="color: blue;">author</span>
+        <span style="color: red;">&lt;tab&gt;</span>
+        <span style="color: blue;">citation</span>
+        </em>. The author and citation are optional. To import quotes, authors, or citations with more than one line, escape the embedded newlines with a backslash.
+        <p>Examples:</p>
+        <pre style="font-size: .8em;">
+          <span style="color: blue;">Single-line quote.</span><em style="color: red;">&lt;tab&gt;</em><span style="color: blue;">Author</span><em style="color: red;">&lt;tab&gt;</em><span style="color: blue;">Citation</span>
+          <span style="color: blue;">Quote without citation.</span><em style="color: red;">&lt;tab&gt;</em><span style="color: blue;">Author</span><em style="color: red;">&lt;tab&gt;</em>
+          <span style="color: blue;">Quote without author or citation.</span><em style="color: red;">&lt;tab&gt;</em>
+          <span style="color: blue;">Multi-line quote: line 1...\
+          ...line 2.</span><em style="color: red;">&lt;tab&gt;</em><span style="color: blue;">Author line 1\
+          Author line 2</span>
+          <span style="color: blue;">Another quote.<em style="color: red;">&lt;tab&gt;</em><span style="color: blue;">Another Author</span>
+        </pre>
+      </li>
+      <li>Fortune files do not explicitly provide an author or attribution
+      for each quote/fortune. This import will extract an author when
+      there is a line of the form <em>--Author</em> and will extract a citation
+      when there is a line of the form <em>--Citation</em> respectively with any
+      amount of leading whitespace. If a citation is used without an author
+      then the author line has to be included or the citation will become the author.
+        <p>Examples:</p>
+        <pre style="font-size: .8;">
+        <span style="color: blue;">A fortune without an author.</span>
+        <em style="color: red;">%</em>
+        <span style="color: blue;">Fortune with author.</span>
+        --<span style="color: blue;"> Author</span>
+        <em style="color: red;">%</em>
+        <span style="color: blue;">Fortune with author and citation.</span>
+        --<span style="color: blue;"> Author</span>
+        --<span style="color: blue;"> Citation</span>
+        <em style="color: red;">%</em>
+        <span style="color: blue;">Fortune without author and citation.</span>
+        --<span style="color: blue;"> </span>
+        --<span style="color: blue;"> Citation</span>
+        <em style="color: red;">%</em>
+      <span style="color: blue;">Multi-line fortune: line 1...
+      ...line 2.</span>
+      -- <span style="color: blue;"> Author line 1
+      Author line 2</span>
+      </pre>
+      </li>
+      <li>Any settings used in the form below (comment, moderation, sticky, input format, categories, etc.) will be applied to all imported quotes.</li>
+      <li>The title entered below will be applied to all quotes. You can use the variable <em>%id</em> in the title which will be replaced by the newly-created quote\'s node ID.</li>
+      <li>Fortune files and tab-separated text data can contain many quotes. To avoid timeout errors while importing large amounts of data, consider importing in smaller chunks with no more than 1000 quotes at a time.</li>
+      <li>If the path module is enabled, you cannot create a path alias while importing, as the import will attempt to use the same path for every quote.</li></ul>'),
+    '#attributes' => array('class' => array('collapsed', 'collapsible')),
+    '#children' => '',
+    );
   switch ($path) {
     case 'node/add#quotes':
       return t('A quote is a famous, infamous, humorous, witty, or otherwise noteworthy quotation or fortune file entry. Quotes can be entered one at a time or mass imported in either tab-separated text or fortune file format.');
@@ -312,39 +364,7 @@ function quotes_help($path, $args) {
       if (arg(3) == 'import') {
         $output .= t('<p>Use the form below to mass import quotes in either tab-separated text or fortune file format. Many quotes will be imported in this one step by creating an individual node for each imported quote. Expand the %Notes section below for more information.</p>', array('%Notes' => t('Notes')));
 
-        $output .= theme('fieldset', array(
-          '#title' => t('Notes for importing'),
-          '#collapsible' => TRUE,
-          '#collapsed' => TRUE,
-          '#markup' => t('<ul><li>Tab-separated quotes should appear one quote per line in the format <em><span style="color: blue;">quote</span><span style="color: red;">&lt;tab&gt;</span><span style="color: green;">author</span></em>. The author and citation are optional; however, the tab is still required. To import quotes, authors, or citations with more than one line, escape the embedded newlines with a backslash. <p>Examples:</p>
-  <pre style="font-size: .75em;">
-<span style="color: blue;">Single-line quote.</span><em style="color: red;">&lt;tab&gt;</em><span style="color: green;">Author</span>
-<span style="color: blue;">Quote without author.</span><em style="color: red;">&lt;tab&gt;</em>
-<span style="color: blue;">Multi-line quote: line 1...\
-...line 2.</span><em style="color: red;">&lt;tab&gt;</em><span style="color: green;">Author line 1\
-Author line 2</span>
-<span style="color: blue;">Another quote.<em style="color: red;">&lt;tab&gt;</em><span style="color: green;">Another Author</span>
-  </pre></li>
-  <li>Fortune files do not explicitly provide an author or attribution
-    for each quote/fortune. This import will extract an author when
-    there is a line of the form <em>-- Author</em> with any amount of
-    leading whitespace.  Examples:
-
-  <pre style="font-size: .75em;">
-<span style="color: blue;">A fortune without an author.</span>
-<em style="color: red;">%</em>
-<span style="color: blue;">Fortune with author.</span>
---<span style="color: green;">Author</span>
-<em style="color: red;">%</em>
-<span style="color: blue;">Multi-line fortune: line 1...
-...line 2.</span>
-          -- <span style="color: green;">Author line 1
-             Author line 2</span>
-  </pre></li>
-  <li>Any settings used in the form below (comment, moderation, sticky, input format, categories, etc.) will be applied to all imported quotes.</li>
-  <li>The title entered below will be applied to all quotes. You can use the variable <em>%id</em> in the title which will be replaced by the newly-created quote\'s node ID.</li>
-  <li>Fortune files and tab-separated text data can contain many quotes. To avoid timeout errors while importing large amounts of data, consider importing in smaller chunks with no more than 1000 quotes at a time.</li>
-  <li>If the path module is enabled, you cannot create a path alias while importing, as the import will attempt to use the same path for every quote.</li></ul>')));
+        $output .= theme('fieldset', array('element' => $fieldset));
       }
       else {
         $output .= t('Use the form below to enter a single quote.') . (user_access('import quotes') ? ' ' . t('Multiple quotes can also be !mass imported in either tab-separted text or fortune file format.', array('!mass imported' => l(t('mass imported'), 'node/add/quotes/import'))) : '');
@@ -430,46 +450,57 @@ function quotes_insert($node) {
         $teaser = text_summary($quote->body, isset($quote->format) ? $quote->format : filter_format_default());
         if ($count == 0) {
           // We'll set the base node correctly from the first quote.
-          $first = clone $node;
-          //          unset($node);
-          $node->quotes_format = $first->quotes_format = 'single';
-          //$node->body = $first->body = $quote->body;
-          //$node->teaser = $first->teaser = $teaser;
-          $node->body[$node->language][0]['value'] = $first->body[$first->language][0]['value'] = $quote->body;
-          $node->body[$node->language][0]['summary'] = $first->body[$first->language][0]['summary'] = $teaser;
-          $node->body[$node->language][0]['format'] = $first->body[$first->language][0]['format'] = $quote->format;
-          $node->quotes_author = $first->quotes_author = $quote->quotes_author;
-          $node->quotes_citation = $first->quotes_citation = $quote->quotes_citation;
-          // Write back the updated info.
-          node_save($node);
+          $first = clone $node;  //clone the node
+          $node = new stdClass(); // Create a new node object
+          $node->type = "quotes"; // Or page, or whatever content type you like
+          node_object_prepare($node); // Set some default values
+          $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
 
-          // When we end this function, the corrected information will be saved for us.
+          $node->title = $first->title;
+          $node->quotes_format = $first->quotes_format = 'single';
+
+          $node->body[$node->language][0]['value'] = $quote->body;
+          //We do not want a teaser or summary in a quote usually
+          //$node->body[$node->language][0]['summary'] = $teaser;
+          $node->body[$node->language][0]['format'] = $quote->format;
+          $node->quotes_author = $quote->quotes_author;
+          $node->quotes_citation = $quote->quotes_citation;
+          $node->quotes_promote = $first->quotes_promote;
+          $node->path = $first->path;
+          // Write the imported quote.
+          node_submit($node); // Prepare node for saving
+          node_save($node);
           continue;
         }
         else {
-          // It's not the first one, so we will make a copy and update the information.
-          // Then we'll save the temporary node.
-          $temp = clone $first;
-          $temp->quotes_format = 'single';
-          // Make node_save create a new nid.
-          unset($temp->nid, $temp->vid, $temp->created);
-          $temp->body = $quote->body;
-          $temp->teaser = $teaser;
-          $temp->quotes_author = $quote->quotes_author;
-          $temp->quotes_citation = $quote->quotes_citation;
+        $node = new stdClass(); // Create a new node object
+        $node->type = "quotes"; // Or page, or whatever content type you like
+        node_object_prepare($node); // Set some default values
+        $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
 
-          // Okay, let's get it saved.
-          node_save($temp);
+        $node->title = $first->title;
+        $node->quotes_format = $first->quotes_format = 'single';
+
+        $node->body[$node->language][0]['value'] = $quote->body;
+        //We do not want a teaser or summary in a quote usually
+        //$node->body[$node->language][0]['summary'] = $teaser;
+        $node->body[$node->language][0]['format'] = $quote->format;
+        $node->quotes_author = $quote->quotes_author;
+        $node->quotes_citation = $quote->quotes_citation;
+        $node->quotes_promote = $first->quotes_promote;
+        $node->path = $first->path;
+        // Write the imported quote.
+        node_submit($node); // Prepare node for saving
+        node_save($node);// When we end this function, the corrected information will be saved for us.
+        continue;
         }
       } // End foreach.
-
-      // Note that we don't "break" so the first quote falls into saving the extra stuff.
-        drupal_set_message(t('!count quotes imported.', array('!count' => $count + 1)));
       drupal_set_message(t('@count quotes imported.', array('@count' => $count + 1)));
+      drupal_goto('quotes');
+      break; // We're done
     case 'single':
       // Save the author, citation, and promote values into our table.
       $aid = _quotes_handle_author($node->quotes_author);
-
       //db_query("INSERT INTO {quotes} (nid, vid, aid, citation, promote) VALUES (%d, %d, '%d', '%s', %d)", $node->nid, $node->vid, $aid, $node->quotes_citation, $node->quotes_promote);
       db_insert('quotes')
         ->fields(array(
@@ -546,7 +577,7 @@ function quotes_update($node) {
       ->fields(array(
         'aid' => 0 + $aid,
         'citation' => $node->quotes_citation,
-        'promote' => $node->quotes_promote,
+        'promote' => (int)$node->quotes_promote,
         ))
       ->condition('nid', $node->nid)
       ->condition('vid', $node->vid)
@@ -638,9 +669,9 @@ function quotes_form($node, $form_state) {
     '#title' => t('Author'),
     '#autocomplete_path' => 'quotes/autocomplete/author',
     '#rows' => 1,
-    '#maxlength' => 1023,
+    '#maxlength' => 254,
     '#default_value' => $author,
-    '#description' => t('This is who is credited for the quotation.') . $no_import,
+    '#description' => check_plain(t('This is who is credited for the quotation.') . $no_import),
     );
 
   $citation = '';
@@ -654,7 +685,7 @@ function quotes_form($node, $form_state) {
     '#rows' => 1,
     '#maxlength' => 1023,
     '#default_value' => $citation,
-    '#description' => t('This is the source (book, magazine, etc.) of the quote.') . $no_import,
+    '#description' => check_plain(t('This is who is credited for the quotation.') . $no_import),
     );
 
   if (user_access('promote quotes to block')) {
@@ -841,7 +872,7 @@ function quotes_link_alter(&$links, $node) {
       unset($links['comment_add'], $links['comment_comments'], $links['statistics_counter']);
       // Get rid of taxonomy links in the block.
       foreach ($links as $key => $link) {
-        if (substr($key, 0, 13) == 'taxonomy_term') {
+        if (drupal_substr($key, 0, 13) == 'taxonomy_term') {
           unset($links[$key]);
         }
       }
@@ -961,21 +992,16 @@ function quotes_block_view($delta) {
     // Check if the node module manages its own language list.(i18n code)
     $translate = FALSE;
     $languages = node_invoke($quote, 'language_list', $translate);
-    if ((!$languages) && ($quote->language <> 'und')) {
+    if ((!$languages) && ($quote->language <> LANGUAGE_NONE)) {
       //echo 'No Lanugage Code  Assigned';
     }
     else {
       $langcode = $quote->language;
-      /* debug
-      echo '<pre>';
-      print_r($languages);
-      echo '</pre>'; */
     }
     // Get the node body
     $quote->body[$langcode][0]['safe_value'] = check_markup($quote->body[$langcode][0]['value'], $format, $quote->language, FALSE);
+
     $quote->content['body'] = array(
-      '#prefix' => '<div class="body">',
-      '#suffix' => '</div>',
       '#markup' => $quote->body[$langcode][0]['safe_value'],
       '#weight' => -90,
       );
@@ -1861,9 +1887,13 @@ function quotes_page($user = NULL, $arg2 = NULL) {
  *   An HTML-formatted list of quotes.
  */
 function quotes_author($author = NULL) {
+  // Get a count of our authors
+  $count = db_query("SELECT COUNT(*) FROM {quotes_authors}")->fetchField();
+  if ($count == 1) { // Only author available, get the author
+    $author = $count;
+  }
   // Check to see if we want to find an anthor
   if ($author === "- FIND -") {
-    //We want to search all authors
     return drupal_get_form('quotes_author_form');
   }
 
@@ -1872,7 +1902,6 @@ function quotes_author($author = NULL) {
     $auth = array('name' => $author, 'bio' => '');
   }
   else {
-
     // See whether we have a name or an id.
     if (is_numeric($author)) {
       $aid = $author;
@@ -1933,7 +1962,7 @@ function quotes_author($author = NULL) {
     if (!$in_block && variable_get('quotes_edit_link', TRUE)) {
       if ((user_access('edit own quotes') && $node->uid == $user->uid) ||
         user_access('administer quotes')) {
-        $editlink = l(t('Edit'), 'node/' . $node->nid);
+        $editlink = l(t('Edit'), 'node/' . $node->nid . '/edit');
       }// Edit Link
       unset($citation);
       if (!empty($node->quotes_citation)) {
@@ -1965,6 +1994,10 @@ function quotes_author_form($form, $form_state) {
   $form = array();
   $max_name_length = 78;
   $authors = quotes_get_authors();
+  if ( !is_array($authors) || empty($authors) ) {
+    form_set_error('body', t('No Authors Found'));
+    return $form;
+  }
   $author_names = array();
   foreach ($authors as $aid => $name) {
     // Make it safe to display (with no HTML).
@@ -2073,11 +2106,26 @@ function _quotes_parse_import($node, $set_errors = FALSE) {
   $quotes = array();
   // This lets us dump a % if it's on the end of the author.
   $trim_chars = " \t\n\r\0\x0B%";
+  // Check the language for the save function
+  if (!isset($langcode)) {
+    $langcode = $GLOBALS['language_content']->language;
+  }
+  //TODO - Figure out language system, for now use fallback option
+  $langcode = LANGUAGE_NONE;
+  // Check if the node module manages its own language list.(i18n code)
+  $translate = FALSE;
+  $languages = node_invoke($node, 'language_list', $translate);
+  if ((!$languages) && ($node->language <> LANGUAGE_NONE)) {
+    $node->language = $langcode;
+  }
+  else {
+    $langcode = $node->language;
+  }
 
   if ($node->quotes_format == 'text') {
     // The documentation shows '<tab>' and some users have actually used that string, so let's allow it.
-    $node->body_new = str_replace('<tab>', "\t", $node->body[$node->language][0]['value']);
-    foreach (explode("\r", str_replace("\\\r", "\n", preg_replace('<(?:\r\n?|\n)>', "\r", trim($node->body_new)))) as $quote) {
+    $quote_import = str_replace('<tab>', "\t", $node->body[$langcode][0]['value']);
+    foreach (explode("\r", str_replace("\\\r", "\n", preg_replace('<(?:\r\n?|\n)>', "\r", trim($quote_import)))) as $quote) {
       $quote = explode("\t", $quote);
 
       if ((count($quote) < 2) || !trim($quote[0])) {
@@ -2086,38 +2134,48 @@ function _quotes_parse_import($node, $set_errors = FALSE) {
         }
         break;
       }
-
-      $quotes[] = (object) array(
-        'body' => trim($quote[0]),
-        'quotes_author' => trim($quote[1]),
-        'quotes_citation' => trim($quote[2]),
-        'format' => $node->body[$node->language][0]['format'],
-        );
+      if (!isset($quote[1])) {
+        $quote[1] = NULL;
+      }
+      if (!isset($quote[2])) {
+        $quote[2] = NULL;
+      }
+      // Check for length of author
+      if (drupal_strlen($quote[1]) > 254) {
+        form_set_error('body', t('Parse error on quote !num. "@found"', array('!num' => count($quotes) + 1, '@found' => $quote[0])));
+      }
+      else {
+        $quotes[] = (object) array(
+          'body' => trim(check_markup($quote[0])),
+          'quotes_author' => trim(check_plain($quote[1])),
+          'quotes_citation' => trim(check_markup($quote[2])),
+          'format' => $node->body[$langcode][0]['format'],
+          );
+      }
     }
   }
   elseif ($node->quotes_format == 'fortune') {
-    foreach (preg_split('<\n+%+\n+>', str_replace("\t", '    ', preg_replace('<(?:\r\n?|\n)>', "\n", $node->body[$node->language][0]['value']))) as $quote) {
+    foreach (preg_split('<\n+%+\n+>', str_replace("\t", '    ', preg_replace('<(?:\r\n?|\n)>', "\n", $node->body[$langcode][0]['value']))) as $quote) {
       if (preg_match('<^(?:(?:(.*)\n+\s*--\s*(.*?)))$>s', $quote, $matches)) {
-        if (!trim($matches[1])) {
-          if ($set_errors) {
-            form_set_error('body', t('Parse error on quote !num.', array('!num' => count($quotes) + 1)));
-          }
-
-          break;
+        $aquote = explode("--", $matches[0]);
+        if (!isset($aquote[1])) {
+          $aquote[1] = NULL;
+        }
+        if (!isset($aquote[2])) {
+          $aquote[2] = NULL;
         }
 
-        $quotes[] = (object) array('body' => trim($matches[1], $trim_chars), 'quotes_author' => trim($matches[2], $trim_chars), 'quotes_citation' => NULL, 'format' => $node->body[$node->language][0]['format']);
+        if (drupal_strlen($aquote[1]) > 254) {
+        form_set_error('body', t('Parse error on quote !num. "@found"', array('!num' => count($quotes) + 1, '@found' => $aquote[0])));
       }
       else {
-        if (!trim($quote)) {
-          if ($set_errors) {
-            form_set_error('body', t('Parse error on quote !num.', array('!num' => count($quotes) + 1)));
-          }
-
-          break;
-        }
-
-        $quotes[] = (object) array('body' => trim($quote, $trim_chars), 'quotes_author' => NULL, 'quotes_citation' => NULL, 'format' => $node->body[$node->language][0]['format']);
+        $quotes[] = (object) array(
+          'body' => trim(check_markup($aquote[0])),
+          'quotes_author' => trim(check_plain($aquote[1])),
+          'quotes_citation' => trim(check_markup($aquote[2])),
+          'format' => $node->body[$langcode][0]['format'],
+          );
+      }
       }
     }
   }
@@ -2148,8 +2206,8 @@ function quotes_get_authors($none = FALSE) {
   $q_alias = $sql -> leftjoin('quotes', 'q', "q.aid = qa.aid");
   $count_alias = $sql->addExpression('COUNT(q.nid)', 'count');
   $sql
-    ->groupBy('name')
-    ->orderBy('name', 'DESC');
+    ->groupBy('name, qa.aid')
+    ->orderBy('name', 'ASC');
 
   $result = $sql->execute()->fetchAll();
   foreach ($result as $key => $value) {

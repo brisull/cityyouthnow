@@ -1,6 +1,83 @@
 
-Migrate 2.2
+Migrate 2.3
+===========
+
+Features and enhancements
+- #1315910 - Added migrate-deregister drush command.
+
+Bug fixes
+- #1378114 - Handle case-sensitive term name variations properly.
+- #1450950 - Convert user datetimes values to timestamps.
+- #1437208 - Handle malformed CSV files quietly.
+- #1413350 - Support invoking subprocesses under Drush 5.
+- #1404732 - Properly call taxonomy_term handler fields() method.
+
+Migrate 2.3 RC1
 ===============
+
+Features and enhancements
+- #1437076 - Make Migration class field mapping methods public.
+- #1430528 - Document importance of migrating term parents first.
+- #1418126 - Use node_delete_multiple on migrate-wipe.
+- #1424632 - Improve user migration performance by reducing hash count.
+- #1414616 - Automatically update migration arguments.
+- #1364326 - Default --limit option to items.
+- #1337640 - Properly optimize the SQL source query for highwater marks.
+- #1366588 - Source plugin support has been refactored to put more of the common
+             processing in the base class. When implementing a source plugin,
+             implement performRewind() and getNextRow().
+- #519906 - Added support for the core poll module (choices and votes).
+- #1355940 - Track all source rows in the map table.
+- #1358650 - Truncate text fields according to configured max_length.
+- #941440 - Autodetection of source fields when unspecified.
+- #1341776 - Add option to skip source counting.
+- #1342936 - Pass source key in calls to Migration::createStub().
+- #1335110 - Automatically lowercase MD5 passwords.
+- #1331912 - Catch exception due to skipped beginProcess().
+- #1337810 - Documented hooks in migrate.api.php.
+- #1342322 - Added default implementation of prepareRow(), simplifying source plugins.
+- #1336534 - Added MigrateSourceXML for efficient handling of large XML files.
+- #1330552 - Provide more detail on bad field mappings.
+- #1321078 - Display incomplete dependencies in the error message.
+- #1321062 - Simple base class for field handlers.
+- #1314448 - Added tnid to node destination handler.
+- #1231492 - Added source handler for retrieving content from file directories.
+- #1290706 - Centralize loading of XML.
+- #1295040 - Support --update functionality in UI.
+- #1304444 - Added static displayMessage(), deprecating showMessage().
+- #1290706 - Centralize loading of XML.
+- #1254398 - Prevent accidental emailing during migration.
+
+Bug fixes
+- #1447368 - Handle purely numeric PHP memory_limit.
+- #1432802 - Default $options to prevent PHP 5.4 error.
+- #1333656 - Remove content type/fields when uninstalling migrate_example_baseball.
+- #1416012 - Cleanly handle NULL source key values in saveIDMapping().
+- #1419086 - Better error handling in MigrateXMLReader::next().
+- #1422114 - ID list array must be imploded for queries.
+- #1372204 - Fix loss of pictures when updating users.
+- #1364034 - Add cache_key option to sources, for disambiguation.
+- #1354162 - Make sure messages are retrieved from the right connection.
+- #1352648 - Update mode reapplied on each batch in UI.
+- #1349246 - Postgres error updating migrate_log.
+- #1342686 - Generalized needs-update support.
+- #1341598 - filename/filemime not set in file_link/file_blob cases.
+- #1342736 - drush options don't need -- prefix.
+- #1340204 - MigrateDestinationFile::prepare() didn't call parent::prepare().
+- #1336880 - Fix XPath handling in MigrateItemsXML::getIDSFromXML.
+- #1334546 - Validate compound keys passed to handleSourceMigration().
+- #1305338 - Corrected type-hint in MigrateSourceSQL constructor.
+- #1305910 - MigrateDestinationTable now tracks inserted/updated records.
+- #1284592 - Fixed error on empty term parents.
+- #1300258 - Fixed error on unfulfilled term references.
+- #1292462 - Group missing from drush options.
+- #1290122 - Force destinations to implement __toString().
+- #1290120 - Warnings updating users if roles not set.
+- #1290118 - Warning in MigrateItemJSON::getItem()
+- #1133096 - Failure to clear currentRow in MigrateSourceMultiItems.
+
+Migrate 2.2
+===========
 
 Bug fixes
 - #1265514 - Fixed error message for failed XML load in MigrateItemsXML.

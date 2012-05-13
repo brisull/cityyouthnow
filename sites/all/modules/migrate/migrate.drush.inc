@@ -18,6 +18,8 @@ function migrate_drush_help($section) {
       return dt('Stop an active migration');
     case 'drush:migrate-reset-status':
       return dt('Reset a migration\'s status to idle');
+    case 'drush:migrate-deregister':
+      return dt('Remove all tracking of a migration');
     case 'drush:migrate-status':
       return dt('List all migrations with current status');
     case 'drush:migrate-fields-destination':
@@ -26,6 +28,8 @@ function migrate_drush_help($section) {
       return dt('List the fields available for mapping from a source');
     case 'drush:migrate-mappings':
       return dt('View information on all field mappings in a migration');
+    case 'drush:migrate-audit':
+      return dt('View information on problems in a migration');
     case 'drush:migrate-wipe':
       return dt('Delete all nodes from specified content types.');
   }
@@ -35,15 +39,14 @@ function migrate_drush_help($section) {
  * Implementation of hook_drush_command().
  */
 function migrate_drush_command() {
-  static $commands = FALSE;
-
   $migration_options = array(
-    '--limit' => 'Limit on the length of each migration process, expressed in seconds or number of items',
-    '--feedback' => 'Frequency of progress messages, in seconds or items processed',
-    '--idlist' => 'A comma delimited list of ids to import or rollback. If unspecified, migrate imports all pending items or rolls back all items for the content set.',
-    '--all' => 'Process all migrations that come after the specified migration. If no value is supplied, all migrations are processed.',
-    '--instrument' => 'Capture performance information (timer, memory, or all)',
-    '--force' => 'Force an operation to run, even if all dependencies are not satisfied',
+    'limit' => 'Limit on the length of each migration process, expressed in seconds or number of items',
+    'feedback' => 'Frequency of progress messages, in seconds or items processed',
+    'idlist' => 'A comma delimited list of ids to import or rollback. If unspecified, migrate imports all pending items or rolls back all items for the content set.',
+    'all' => 'Process all migrations that come after the specified migration. If no value is supplied, all migrations are processed.',
+    'instrument' => 'Capture performance information (timer, memory, or all)',
+    'force' => 'Force an operation to run, even if all dependencies are not satisfied',
+    'group' => 'Name of the migration group to run',
   );
   $items['migrate-status'] = array(
     'description' => 'List all migrations with current status.',
@@ -62,13 +65,15 @@ function migrate_drush_command() {
   );
   $items['migrate-fields-destination'] = array(
     'description' => 'List the fields available for mapping in a destination.',
+    'options' => array(
+      'all' => $migration_options['all'],
+      'group' => $migration_options['group'],
+    ),
     'arguments' => array(
       'migration' => 'Name of the migration or destination class to query for fields',
-      'bundle' => 'For a destination class, an optional bundle',
     ),
     'examples' => array(
       'migrate-fields-destination MyNode' => 'List fields for the destination in the MyNode migration',
-      'migrate-fields-destination node article' => 'List fields available for migrating into the Article node type',
     ),
     'drupal dependencies' => array('migrate'),
     'aliases' => array('mfd'),
@@ -77,6 +82,10 @@ function migrate_drush_command() {
     'description' => 'List the fields available for mapping from a source.',
     'arguments' => array(
       'migration' => 'Name of the migration or destination class to query for fields',
+    ),
+    'options' => array(
+      'all' => $migration_options['all'],
+      'group' => $migration_options['group'],
     ),
     'examples' => array(
       'migrate-fields-destination MyNode' => 'List fields in the source query for the MyNode migration',
@@ -87,6 +96,8 @@ function migrate_drush_command() {
   $items['migrate-mappings'] = array(
     'description' => 'View information on all field mappings in a migration.',
     'options' => array(
+      'all' => $migration_options['all'],
+      'group' => $migration_options['group'],
       'csv' => 'Export information as a CSV',
       'full' => 'Include more information on each mapping',
     ),
@@ -99,6 +110,21 @@ function migrate_drush_command() {
     ),
     'drupal dependencies' => array('migrate'),
     'aliases' => array('mm'),
+  );
+  $items['migrate-audit'] = array(
+    'description' => 'View information on problems in a migration.',
+    'options' => array(
+      'all' => $migration_options['all'],
+      'group' => $migration_options['group'],
+    ),
+    'arguments' => array(
+      'migration' => 'Name of the migration',
+    ),
+    'examples' => array(
+      'migrate-audit MyNode' => 'Report on problems in the MyNode migration',
+    ),
+    'drupal dependencies' => array('migrate'),
+    'aliases' => array('ma'),
   );
   $items['migrate-rollback'] = array(
     'description' => 'Roll back the destination objects from a given migration',
@@ -118,12 +144,12 @@ function migrate_drush_command() {
     'drupal dependencies' => array('migrate'),
     'aliases' => array('mr'),
   );
-  $migration_options['--update'] = 'In addition to processing unimported items from the source, update previously-imported items with new data';
-  $migration_options['--needs-update'] =
+  $migration_options['update'] = 'In addition to processing unimported items from the source, update previously-imported items with new data';
+  $migration_options['needs-update'] =
     'Reimport up to 10K records where needs_update=1. This option is only needed when your Drupal DB is on a different DB server from your source data. Otherwise, these records get migrated with just migrate-import.';
-  $migration_options['--stop'] = 'Stop specified migration(s) if applicable.';
-  $migration_options['--rollback'] = 'Rollback specified migration(s) if applicable.';
-  $migration_options['--file_function'] = 'Override file function to use when migrating images.';
+  $migration_options['stop'] = 'Stop specified migration(s) if applicable.';
+  $migration_options['rollback'] = 'Rollback specified migration(s) if applicable.';
+  $migration_options['file_function'] = 'Override file function to use when migrating images.';
   $items['migrate-import'] = array(
     'description' => 'Perform one or more migration processes',
     'options' => $migration_options,
@@ -146,7 +172,7 @@ function migrate_drush_command() {
   );
   $items['migrate-stop'] = array(
     'description' => 'Stop an active migration operation',
-    'options' => array('--all' => 'Stop all active migration operations'),
+    'options' => array('all' => 'Stop all active migration operations'),
     'arguments' => array(
       'migration' => 'Name of migration to stop',
     ),
@@ -159,7 +185,7 @@ function migrate_drush_command() {
   );
   $items['migrate-reset-status'] = array(
     'description' => 'Reset a active migration\'s status to idle',
-    'options' => array('--all' => 'Reset all active migration operations'),
+    'options' => array('all' => 'Reset all active migration operations'),
     'arguments' => array(
       'migration' => 'Name of migration to reset',
     ),
@@ -169,6 +195,18 @@ function migrate_drush_command() {
     ),
     'drupal dependencies' => array('migrate'),
     'aliases' => array('mrs'),
+  );
+  $items['migrate-deregister'] = array(
+    'description' => 'Remove all tracking of a migration',
+    'options' => array('orphans' => 'Remove tracking for any migrations whose implementing class no longer exists'),
+    'arguments' => array(
+      'migration' => 'Name of migration to deregister',
+    ),
+    'examples' => array(
+      'migrate-deregister Article' => 'Deregister the Article migration',
+      'migrate-deregister --orphans' => 'Deregister any no-longer-implemented migrations',
+    ),
+    'drupal dependencies' => array('migrate'),
   );
   $items['migrate-wipe'] = array(
     'description' => 'Delete all nodes from specified content types.',
@@ -214,8 +252,14 @@ function drush_migrate_get_options() {
 function drush_migrate_backend_invoke() {
   $args = drush_get_arguments();
   $options = drush_migrate_get_options();
-  // @todo: use drush_backend_invoke_args() as per http://drupal.org/node/658420.
-  return drush_backend_invoke(implode(' ', $args), $options);
+  if (intval(DRUSH_MAJOR_VERSION) < 4) {
+    // @todo: use drush_backend_invoke_args() as per http://drupal.org/node/658420.
+    return drush_backend_invoke(implode(' ', $args), $options);
+  }
+  else {
+    // $args[0] is the command name, $args[1] is the list of migrations.
+    return drush_invoke_process('@self', $args[0], array($args[1]), $options);
+  }
 }
 
 /**
@@ -244,6 +288,10 @@ function drush_migrate_status($name = NULL) {
       $has_counts = TRUE;
       if (method_exists($migration, 'sourceCount')) {
         $total = $migration->sourceCount($refresh);
+        if ($total < 0) {
+          $has_counts = FALSE;
+          $total = dt('N/A');
+        }
       }
       else {
         $has_counts = FALSE;
@@ -251,13 +299,14 @@ function drush_migrate_status($name = NULL) {
       }
       if (method_exists($migration, 'importedCount')) {
         $imported = $migration->importedCount();
+        $processed = $migration->processedCount();
       }
       else {
         $has_counts = FALSE;
         $imported = dt('N/A');
       }
       if ($has_counts) {
-        $unimported = $total - $imported;
+        $unimported = $total - $processed;
       }
       else {
         $unimported = dt('N/A');
@@ -295,29 +344,23 @@ function drush_migrate_status($name = NULL) {
 }
 
 // TODO: Use drush_choice for detailed field info
-function drush_migrate_fields_destination() {
+function drush_migrate_fields_destination($args = NULL) {
   try {
-    $args = func_get_args();
-    $machine_name = array_shift($args);
-    $migration = MigrationBase::getInstance($machine_name);
-    if ($migration) {
+    $migrations = drush_migrate_get_migrations($args);
+    foreach ($migrations as $name => $migration) {
+      drush_print("\n" . dt('@migration Destination Fields', array('@migration' => $name)) . "\n");
+
       $destination = $migration->getDestination();
-    }
-    else {
-      drush_log(dt('No migration found matching !machine_name',
-                   array('!machine_name' => $machine_name)),
-                'error');
-      return;
-    }
-    if (method_exists($destination, 'fields')) {
-      $table = array();
-      foreach ($destination->fields() as $machine_name => $description) {
-        $table[] = array($description, $machine_name);
+      if (method_exists($destination, 'fields')) {
+        $table = array();
+        foreach ($destination->fields() as $machine_name => $description) {
+          $table[] = array($description, $machine_name);
+        }
+        drush_print_table($table);
       }
-      drush_print_table($table);
-    }
-    else {
-      drush_print(dt('!class has no fields', array('!class' => $class_name)));
+      else {
+        drush_print(dt('No fields were found.'));
+      }
     }
   }
   catch (MigrateException $e) {
@@ -326,29 +369,23 @@ function drush_migrate_fields_destination() {
   }
 }
 
-function drush_migrate_fields_source() {
+function drush_migrate_fields_source($args = NULL) {
   try {
-    $args = func_get_args();
-    $machine_name = array_shift($args);
-    $migration = MigrationBase::getInstance($machine_name);
-    if ($migration) {
+    $migrations = drush_migrate_get_migrations($args);
+    foreach ($migrations as $name => $migration) {
+      drush_print("\n" . dt('@migration Source Fields', array('@migration' => $name)) . "\n");
+
       $source = $migration->getSource();
-    }
-    else {
-      drush_log(dt('No migration found matching !machine_name',
-                   array('!machine_name' => $machine_name)),
-                'error');
-      return;
-    }
-    if (method_exists($source, 'fields')) {
-      $table = array();
-      foreach ($source->fields() as $machine_name => $description) {
-        $table[] = array($description, $machine_name);
+      if (method_exists($source, 'fields')) {
+        $table = array();
+        foreach ($source->fields() as $machine_name => $description) {
+          $table[] = array($description, $machine_name);
+        }
+        drush_print_table($table);
       }
-      drush_print_table($table);
-    }
-    else {
-      drush_print(dt('!class has no fields', array('!class' => $class_name)));
+      else {
+        drush_print(dt('No fields were found.'));
+      }
     }
   }
   catch (MigrateException $e) {
@@ -360,115 +397,228 @@ function drush_migrate_fields_source() {
 /**
  * Display field mappings for a migration.
  */
-function drush_migrate_mappings() {
+function drush_migrate_mappings($args = NULL) {
   try {
-    $args = func_get_args();
-    $machine_name = array_shift($args);
-    $migration = MigrationBase::getInstance($machine_name);
-    if (!$migration) {
-      return drush_set_error(dt('No class found matching !machine_name',
-                   array('!machine_name' => $machine_name)));
-    }
     $full = drush_get_option('full');
-    // In verbose mode, we'll also get source and destination field descriptions
-    if ($full) {
-      $destination = $migration->getDestination();
-      $dest_descriptions = array();
-      if (method_exists($destination, 'fields')) {
-        foreach ($destination->fields() as $machine_name => $description) {
-          $dest_descriptions[$machine_name] = $description;
+    $migrations = drush_migrate_get_migrations($args);
+    foreach ($migrations as $name => $migration) {
+      drush_print("\n" . dt('@migration Mappings', array('@migration' => $name)) . "\n");
+
+      // In verbose mode, we'll also get source and destination field descriptions
+      if ($full) {
+        $destination = $migration->getDestination();
+        $dest_descriptions = array();
+        if (method_exists($destination, 'fields')) {
+          foreach ($destination->fields() as $machine_name => $description) {
+            $dest_descriptions[$machine_name] = $description;
+          }
+        }
+        $source = $migration->getSource();
+        $src_descriptions = array();
+        if (method_exists($source, 'fields')) {
+          foreach ($source->fields() as $machine_name => $description) {
+            $src_descriptions[$machine_name] = $description;
+          }
         }
       }
-      $source = $migration->getSource();
-      $src_descriptions = array();
-      if (method_exists($source, 'fields')) {
-        foreach ($source->fields() as $machine_name => $description) {
-          $src_descriptions[$machine_name] = $description;
+
+      if (method_exists($migration, 'getFieldMappings')) {
+        // First group the mappings. We want "interesting" mappings first, so
+        // put the boring Done and DNM mappings last.
+        $descriptions = array();
+        $done = array();
+        $dnm = array();
+        foreach ($migration->getFieldMappings() as $mapping) {
+          $group = $mapping->getIssueGroup();
+          $lowergroup = drupal_strtolower($group);
+          if ($lowergroup == dt('done')) {
+            $done[$group][] = $mapping;
+          }
+          else if ($lowergroup == dt('dnm') || $lowergroup == dt('do not migrate')) {
+            $dnm[$group][] = $mapping;
+          }
+          else {
+            $descriptions[$group][] = $mapping;
+          }
+        }
+        $descriptions = array_merge($descriptions, $done, $dnm);
+
+        // Put out each group header
+        $table = array();
+        if ($full) {
+          $table[] = array(dt('Destination'), dt(''), dt('Source'), dt(''), dt('Default'),
+            dt('Description'));
+        }
+        else {
+          $table[] = array(dt('Destination'), dt('Source'), dt('Default'),
+            dt('Description'));
+        }
+        $first = TRUE;
+
+        foreach ($descriptions as $group => $mappings) {
+          if ($first) {
+            $first = FALSE;
+          }
+          else {
+            $table[] = array(' ');
+          }
+          // Attempt to highlight the group header a bit so it stands out
+          $group_header = '--- ' . strtoupper($group) . ' ---';
+          $table[] = array($group_header);
+          foreach ($mappings as $mapping) {
+            if (is_array($mapping->getDefaultValue())) {
+              $default = implode(',', $mapping->getDefaultValue());
+            }
+            else {
+              $default = $mapping->getDefaultValue();
+            }
+            $destination = $mapping->getDestinationField();
+            $source = $mapping->getSourceField();
+            if ($full) {
+              if ($destination && $dest_descriptions[$destination]) {
+                $dest_description = $dest_descriptions[$destination];
+              }
+              else {
+                $dest_description = '';
+              }
+              if ($source && $src_descriptions[$source]) {
+                $src_description = $src_descriptions[$source];
+              }
+              else {
+                $src_description = '';
+              }
+              $table[] = array($destination, $dest_description, $source, $src_description,
+                $default, $mapping->getDescription());
+            }
+            else {
+              $table[] = array($destination, $source,
+                $default, $mapping->getDescription());
+            }
+          }
+        }
+        if (drush_get_option('csv')) {
+          foreach ($table as $row) {
+            fputcsv(STDOUT, $row);
+          }
+        }
+        else {
+          drush_print_table($table, TRUE);
         }
       }
     }
+  }
+  catch (MigrateException $e) {
+    drush_print($e->getMessage());
+    exit;
+  }
+}
 
-    if (method_exists($migration, 'getFieldMappings')) {
-      // First group the mappings. We want "interesting" mappings first, so
-      // put the boring Done and DNM mappings last.
-      $descriptions = array();
-      $done = array();
-      $dnm = array();
-      foreach ($migration->getFieldMappings() as $mapping) {
-        $group = $mapping->getIssueGroup();
-        $lowergroup = drupal_strtolower($group);
-        if ($lowergroup == dt('done')) {
-          $done[$group][] = $mapping;
-        }
-        else if ($lowergroup == dt('dnm') || $lowergroup == dt('do not migrate')) {
-          $dnm[$group][] = $mapping;
-        }
-        else {
-          $descriptions[$group][] = $mapping;
-        }
+/**
+ * Display field mappings for a migration.
+ */
+function drush_migrate_audit($args = NULL) {
+  try {
+    $problem_descriptions = array(
+      'wtf' => dt("Probably an incomplete migration:"),
+      'noted_issues' => dt("Noted as an issue:"),
+      // I wish drush had dformat_plural().
+      'sources_unmapped' => dt("Source(s) not used in a mapping:"),
+      'sources_missing' => dt("Used as source field in mapping but not in source field list:"),
+      'destinations_unmapped' => dt("Destination(s) not used in a mapping:"),
+      'destinations_missing' => dt("Used as destination field in mapping but not in destination field list:"),
+    );
+
+    drush_print("Auditing migrations");
+
+    $migrations = drush_migrate_get_migrations($args);
+    foreach ($migrations as $name => $migration) {
+      $problems = array();
+      foreach ($problem_descriptions as $key => $description) {
+        $problems[$key] = array();
       }
-      $descriptions = array_merge($descriptions, $done, $dnm);
 
-      // Put out each group header
-      $table = array();
-      if ($full) {
-        $table[] = array(dt('Destination'), dt(''), dt('Source'), dt(''), dt('Default'),
-          dt('Description'));
+      drush_print("\n" . dt('@migration', array('@migration' => $name)) . "\n");
+
+      if (!method_exists($migration, 'getSource') || !($source = $migration->getSource())) {
+        $problems['wtf'][] = dt('Missing a source');
+        $source_fields = array();
       }
       else {
-        $table[] = array(dt('Destination'), dt('Source'), dt('Default'),
-          dt('Description'));
+        $source_fields = $source->fields();
       }
-      $first = TRUE;
 
-      foreach ($descriptions as $group => $mappings) {
-        if ($first) {
-          $first = FALSE;
-        }
-        else {
-          $table[] = array(' ');
-        }
-        // Attempt to highlight the group header a bit so it stands out
-        $group_header = '--- ' . strtoupper($group) . ' ---';
-        $table[] = array($group_header);
-        foreach ($mappings as $mapping) {
-          if (is_array($mapping->getDefaultValue())) {
-            $default = implode(',', $mapping->getDefaultValue());
-          }
-          else {
-            $default = $mapping->getDefaultValue();
-          }
-          $destination = $mapping->getDestinationField();
-          $source = $mapping->getSourceField();
-          if ($full) {
-            if ($destination && $dest_descriptions[$destination]) {
-              $dest_description = $dest_descriptions[$destination];
-            }
-            else {
-              $dest_description = '';
-            }
-            if ($source && $src_descriptions[$source]) {
-              $src_description = $src_descriptions[$source];
-            }
-            else {
-              $src_description = '';
-            }
-            $table[] = array($destination, $dest_description, $source, $src_description,
-              $default, $mapping->getDescription());
-          }
-          else {
-            $table[] = array($destination, $source,
-              $default, $mapping->getDescription());
-          }
-        }
-      }
-      if (drush_get_option('csv')) {
-        foreach ($table as $row) {
-          fputcsv(STDOUT, $row);
-        }
+      if (!method_exists($migration, 'getDestination') || !($destination = $migration->getDestination())) {
+        $problems['wtf'][] = dt('Missing a destination');
+        $destination_fields = array();
       }
       else {
-        drush_print_table($table, TRUE);
+        $destination_fields = $destination->fields();
+      }
+
+      if (!method_exists($migration, 'getFieldMappings')) {
+        $problems['wtf'][] = dt('Missing field mappings');
+        $field_mappings = array();
+      }
+      else {
+        $field_mappings = $migration->getFieldMappings();
+      }
+
+      $used_sources = array();
+      $used_destinations = array();
+      foreach ($field_mappings as $mapping) {
+        $source_field = $mapping->getSourceField();
+        $destination_field = $mapping->getDestinationField();
+
+        $used_sources[$source_field] = TRUE;
+        $used_destinations[$destination_field] = TRUE;
+
+        $issue_priority = $mapping->getIssuePriority();
+        if (!is_null($issue_priority) && $issue_priority != MigrateFieldMapping::ISSUE_PRIORITY_OK) {
+          $problems['noted_issues'][] = array(
+            dt('Source') => $source_field,
+            dt('Destination') => $destination_field,
+            dt('Priority') => MigrateFieldMapping::$priorities[$issue_priority],
+            dt('Description') => $mapping->getDescription(),
+          );
+        }
+
+        // Validate source and destination fields actually exist
+        if (!is_null($source_field) && !isset($source_fields[$source_field])) {
+          $problems['sources_missing'][] = $source_field;
+        }
+        if (!is_null($destination_field) && !isset($destination_fields[$destination_field])) {
+          $problems['destinations_missing'][] = $destination_field;
+        }
+      }
+
+      foreach (array_diff_key($source_fields, $used_sources) as $name => $description) {
+        $problems['sources_unmapped'][] = array('Field' => $name, 'Description' => $description);
+      }
+      foreach (array_diff_key($destination_fields, $used_destinations) as $name => $description) {
+        $problems['destinations_unmapped'][] = array('Field' => $name, 'Description' => $description);
+      }
+
+      $problems = array_filter($problems);
+      if (empty($problems)) {
+        drush_print(dt('No problems found.') . "\n", 1);
+      }
+      else {
+        foreach ($problems as $type => $some_problems) {
+          drush_print($problem_descriptions[$type]);
+          // If the contents of each row are arrays print it as a table.
+          if (is_array($some_problems[0])) {
+            $table = array_merge(array(array_keys($some_problems[0])), $some_problems);
+            drush_print_table($table, TRUE);
+          }
+          else {
+            foreach ($some_problems as $problem) {
+              drush_print($problem, 1);
+            }
+            // Add an extra new line to keep the spacing consistent with the
+            // tables.
+            drush_print();
+          }
+        }
       }
     }
   }
@@ -497,10 +647,13 @@ function drush_migrate_rollback($args = NULL) {
       $parts = explode(' ', $limit);
       $options['limit']['value'] = $parts[0];
       $options['limit']['unit'] = $parts[1];
-      if ($options['limit']['value'] != 'seconds' &&
-          $options['limit']['value'] != 'second' &&
-          $options['limit']['value'] != 'items' &&
-          $options['limit']['unit'] != 'item') {
+      if (!$options['limit']['unit']) {
+        $options['limit']['unit'] = 'items';
+      }
+      else if ($options['limit']['unit'] != 'seconds' &&
+               $options['limit']['unit'] != 'second' &&
+               $options['limit']['unit'] != 'items' &&
+               $options['limit']['unit'] != 'item') {
         drush_set_error(NULL, dt("Invalid limit unit '!unit'",
           array('!unit' => $options['limit']['unit'])));
         return;
@@ -615,6 +768,26 @@ function drush_migrate_get_migrations($args) {
 }
 
 // Implement drush_hook_COMMAND_validate().
+function drush_migrate_fields_destination_validate($args = NULL) {
+  return drush_migrate_validate_common($args);
+}
+
+// Implement drush_hook_COMMAND_validate().
+function drush_migrate_fields_source_validate($args = NULL) {
+  return drush_migrate_validate_common($args);
+}
+
+// Implement drush_hook_COMMAND_validate().
+function drush_migrate_mappings_validate($args = NULL) {
+  return drush_migrate_validate_common($args);
+}
+
+// Implement drush_hook_COMMAND_validate().
+function drush_migrate_audit_validate($args = NULL) {
+  return drush_migrate_validate_common($args);
+}
+
+// Implement drush_hook_COMMAND_validate().
 function drush_migrate_import_validate($args = NULL) {
   return drush_migrate_validate_common($args);
 }
@@ -718,10 +891,13 @@ function drush_migrate_import($args = NULL) {
       $parts = explode(' ', $limit);
       $options['limit']['value'] = $parts[0];
       $options['limit']['unit'] = $parts[1];
-      if ($options['limit']['unit'] != 'seconds' &&
-          $options['limit']['unit'] != 'second' &&
-          $options['limit']['unit'] != 'items' &&
-          $options['limit']['unit'] != 'item') {
+      if (!$options['limit']['unit']) {
+        $options['limit']['unit'] = 'items';
+      }
+      else if ($options['limit']['unit'] != 'seconds' &&
+               $options['limit']['unit'] != 'second' &&
+               $options['limit']['unit'] != 'items' &&
+               $options['limit']['unit'] != 'item') {
         drush_set_error(NULL, dt("Invalid limit unit '!unit'",
           array('!unit' => $options['limit']['unit'])));
         return;
@@ -764,13 +940,12 @@ function drush_migrate_import($args = NULL) {
         $migration->prepareUpdate();
       }
       if (drush_get_option('needs-update')) {
-        $needs_update = db_select('migrate_map_' . strtolower($machine_name), 'map')
-                          ->fields('map', array('sourceid1'))
-                          ->condition('needs_update', 1)
-                          ->range(0, 10000)
-                          ->execute()
-                          ->fetchAllKeyed(0, 0);
-        $options['idlist'] = implode(',', $needs_update);
+        $map_rows = $migration->getMap()->getRowsNeedingUpdate(10000);
+        $idlist = array();
+        foreach ($map_rows as $row) {
+          $idlist[] = $row->sourceid1;
+        }
+        $options['idlist'] = implode(',', $idlist);
       }
       // The goal here is to do one migration in the parent process and then
       // spawn subshells as needed when memory is depleted. We show feedback
@@ -780,9 +955,12 @@ function drush_migrate_import($args = NULL) {
         // Our first pass and in the parent process. Run a migration right here.
         $return = $migration->processImport($options);
         if ($return == MigrationBase::RESULT_SKIPPED) {
-          drush_log(dt('Skipping migration !name due to unfulfilled dependencies -
-              use the --force option to run it anyway',
-            array('!name' => $machine_name)), 'warning');
+          drush_log(dt("Skipping migration !name due to unfulfilled dependencies:\n  !depends\nUse the --force option to run it anyway.",
+            array(
+              '!name' => $machine_name,
+              '!depends' => implode("\n  ", $migration->incompleteDependencies()),
+            )),
+            'warning');
         }
         elseif ($return == MigrationBase::RESULT_STOPPED) {
           break;
@@ -797,8 +975,12 @@ function drush_migrate_import($args = NULL) {
           // 'object' holds the return code we care about.
           $return = $return['object'];
           if ($return == MigrationBase::RESULT_SKIPPED) {
-            drush_log(dt('Skipping migration !name due to unfulfilled dependencies',
-              array('!name' => $machine_name)), 'warning');
+            drush_log(dt("Skipping migration !name due to unfulfilled dependencies:\n  !depends\nUse the --force option to run it anyway.",
+              array(
+                '!name' => $machine_name,
+                '!depends' => implode("\n  ", $migration->incompleteDependencies()),
+              )),
+              'warning');
           }
           elseif ($return == MigrationBase::RESULT_STOPPED) {
             $stop = TRUE;
@@ -811,8 +993,12 @@ function drush_migrate_import($args = NULL) {
         // I'm in a subshell. Import then set return value so parent process can respawn or move on.
         $return = $migration->processImport($options);
         if ($return == MigrationBase::RESULT_SKIPPED) {
-          drush_log(dt('Skipping migration !name due to unfulfilled dependencies',
-            array('!name' => $machine_name)), 'warning');
+          drush_log(dt("Skipping migration !name due to unfulfilled dependencies:\n  !depends\n",
+            array(
+              '!name' => $machine_name,
+              '!depends' => implode("\n  ", $migration->incompleteDependencies()),
+            )),
+            'warning');
         }
         drush_backend_set_result($return);
       }
@@ -859,11 +1045,8 @@ function drush_migrate_stop($args = NULL) {
 }
 
 /**
-// * Reset the status of a given content set.
-// *
-// * @param $content_set
-// *  The name of the Migration
-// */
+ * Reset the status of a given migration.
+ */
 function drush_migrate_reset_status($args = NULL) {
   try {
     $migrations = drush_migrate_get_migrations($args);
@@ -880,6 +1063,55 @@ function drush_migrate_reset_status($args = NULL) {
 }
 
 /**
+ * Deregister a given migration, or all orphaned migrations. Note that the
+ * migration might no longer "exist" (the class implementation might be gone),
+ * so we can't count on being able to instantiate it, or use migrate_migrations().
+ */
+function drush_migrate_deregister($args = NULL) {
+  try {
+    $orphans = drush_get_option('orphans');
+    if ($orphans) {
+      $migrations = array();
+      $result = db_select('migrate_status', 'ms')
+                    ->fields('ms', array('class_name', 'machine_name'))
+                    ->execute();
+      foreach ($result as $row) {
+        if (!class_exists($row->class_name)) {
+          $migrations[] = $row->machine_name;
+        }
+      }
+    }
+    else {
+      $migrations = explode(',', $args);
+    }
+    foreach ($migrations as $machine_name) {
+      drush_migrate_deregister_migration($machine_name);
+      drush_log(dt("Deregistered '!description' migration",
+        array('!description' => $machine_name)), 'success');
+    }
+  }
+  catch (MigrateException $e) {
+    drush_print($e->getMessage());
+    exit;
+  }
+}
+
+/**
+ * Given a migration machine name, remove its tracking from the database.
+ *
+ * @param $machine_name
+ */
+function drush_migrate_deregister_migration($machine_name) {
+  // The class is gone, so we'll manually clear migrate_status, and make
+  // the default assumptions about the map/message tables.
+  db_drop_table('migrate_map_' . $machine_name);
+  db_drop_table('migrate_message_' . $machine_name);
+  db_delete('migrate_status')
+    ->condition('machine_name', $machine_name)
+    ->execute();
+}
+
+/**
  * A drush command callback.
  */
 function drush_migrate_wipe() {
@@ -889,10 +1121,9 @@ function drush_migrate_wipe() {
           ->condition('type', $types, 'IN')
           ->execute()
           ->fetchCol();
-  // TODO: Call node_delete_multiple in batches of 500 or so
-  migrate_instrument_start('node_delete');
-  foreach ($nids as $nid) {
-    node_delete($nid);
+  $chunks = array_chunk($nids, 50);
+  foreach ($chunks as $chunk) {
+    node_delete_multiple($chunk);
   }
   migrate_instrument_stop('node_delete');
 }

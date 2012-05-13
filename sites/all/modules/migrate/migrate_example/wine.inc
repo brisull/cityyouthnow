@@ -43,11 +43,12 @@ abstract class AdvancedExampleMigration extends Migration {
  * TIP: While usually you'll create true migrations - processes that copy data
  * from some source into Drupal - you can also define processing steps for either
  * the import or rollback stages that take other actions. In this case, we want
- * to disable auto_nodetitle while the migration steps run.
+ * to disable auto_nodetitle while the migration steps run. We'll re-enable it
+ * over in WineFinishMigration.
  */
 class WinePrepMigration extends MigrationBase {
-  // Remember whether the auto_nodetitle was originally enabled, so we know whether
-  // to re-enable it
+  // Track whether the auto_nodetitle was originally enabled so we know whether
+  // to re-enable it. This is public so WineFinishMigration can reference it.
   public static $wasEnabled = FALSE;
 
   public function __construct() {
@@ -74,11 +75,11 @@ class WinePrepMigration extends MigrationBase {
     if (module_exists('auto_nodetitle')) {
       self::$wasEnabled = TRUE;
       module_disable(array('auto_nodetitle'));
-      $this->showMessage(t('Disabled auto_nodetitle module'), 'success');
+      self::displayMessage(t('Disabled auto_nodetitle module'), 'success');
     }
     else {
       self::$wasEnabled = FALSE;
-      $this->showMessage(t('Auto_nodetitle is already disabled'), 'success');
+      self::displayMessage(t('Auto_nodetitle is already disabled'), 'success');
     }
     // Must return one of the MigrationBase RESULT constants
     return MigrationBase::RESULT_COMPLETED;
@@ -256,6 +257,14 @@ class WineRoleMigration extends XMLMigration {
       ),
       MigrateDestinationRole::getKeySchema()
     );
+
+    // IMPORTANT: Do not try this at home! We have included importable files
+    // with the migrate_example module so it can be very simply installed and
+    // run, but you should never include any data you want to keep private
+    // (especially user data like email addresses, phone numbers, etc.) in the
+    // module directory. Your source data should be outside of the webroot, and
+    // should not be anywhere where it may get committed into a revision control
+    // system.
 
     // This can also be an URL instead of a file path.
     $xml_folder = DRUPAL_ROOT . '/' . drupal_get_path('module', 'migrate_example') . '/xml/';
@@ -440,6 +449,14 @@ class WineProducerXMLMigration extends XMLMigration {
       MigrateDestinationNode::getKeySchema()
     );
 
+    // IMPORTANT: Do not try this at home! We have included importable files
+    // with the migrate_example module so it can be very simply installed and
+    // run, but you should never include any data you want to keep private
+    // (especially user data like email addresses, phone numbers, etc.) in the
+    // module directory. Your source data should be outside of the webroot, and
+    // should not be anywhere where it may get committed into a revision control
+    // system.
+
     // This can also be an URL instead of a file path.
     $xml_folder = DRUPAL_ROOT . '/' . drupal_get_path('module', 'migrate_example') . '/xml/';
     $list_url = $xml_folder . 'index.xml';
@@ -511,6 +528,13 @@ class WineProducerMultiXMLMigration extends XMLMigration {
       MigrateDestinationNode::getKeySchema()
     );
 
+    // IMPORTANT: Do not try this at home! We have included importable files
+    // with the migrate_example module so it can be very simply installed and
+    // run, but you should never include any data you want to keep private
+    // (especially user data like email addresses, phone numbers, etc.) in the
+    // module directory. Your source data should be outside of the webroot, and
+    // should not be anywhere where it may get committed into a revision control
+    // system.
 
     // This can also be an URL instead of a file path.
     $xml_folder = DRUPAL_ROOT . '/' . drupal_get_path('module', 'migrate_example') . '/xml/';
@@ -539,6 +563,75 @@ class WineProducerMultiXMLMigration extends XMLMigration {
     // TIP: Note that all xpaths for fields begin at the last element of the item
     // xpath since each item xml chunk is processed individually.
     // (ex. xpath=name is equivalent to a full xpath of /producers/producer/name)
+    $this->addFieldMapping('title', 'name')
+         ->xpath('name');
+    $this->addFieldMapping('uid', 'authorid')
+         ->xpath('authorid')
+         ->sourceMigration('WineUser')
+         ->defaultValue(1);
+    $this->addFieldMapping('migrate_example_wine_regions', 'region')
+         ->xpath('region');
+    $this->addFieldMapping('body', 'description')
+         ->xpath('description');
+  }
+}
+
+/**
+ * TIP: An alternative approach using MigrateSourceSQL. This uses a different
+ * XML library, which advances element-by-element through the XML file rather
+ * than reading in the whole file. This source will work better with large XML
+ * files, but is slower for small files and has a more restrictive query lanaguage
+ * for selecting the elements to process.
+ */
+class WineProducerXMLPullMigration extends XMLMigration {
+  public function __construct() {
+    parent::__construct(MigrateGroup::getInstance('wine', array('default')));
+    $this->description = t('XML feed (pull) of wine producers of the world');
+    $this->dependencies = array('WineRegion', 'WineUser');
+
+    $fields = array(
+      'name' => t('Producer name'),
+      'description' => t('Description of producer'),
+      'authorid' => t('Numeric ID of the author'),
+      'region' => t('Name of region'),
+    );
+
+    $this->map = new MigrateSQLMap($this->machineName,
+      array(
+        'sourceid' => array(
+          'type' => 'varchar',
+          'length' => 4,
+          'not null' => TRUE,
+        )
+      ),
+      MigrateDestinationNode::getKeySchema()
+    );
+
+    // IMPORTANT: Do not try this at home! We have included importable files
+    // with the migrate_example module so it can be very simply installed and
+    // run, but you should never include any data you want to keep private
+    // (especially user data like email addresses, phone numbers, etc.) in the
+    // module directory. Your source data should be outside of the webroot, and
+    // should not be anywhere where it may get committed into a revision control
+    // system.
+
+    // This can also be an URL instead of a file path.
+    $xml_folder = DRUPAL_ROOT . '/' . drupal_get_path('module', 'migrate_example') . '/xml/';
+    $items_url = $xml_folder . 'producers2.xml';
+
+    // As with MigrateSourceMultiItems, this applies where there is not a separate
+    // list of IDs to process - the source XML file is entirely self-contained.
+    // For the ID path, and xpath for each component, we can use the full xpath
+    // syntax as usual. However, the syntax to select the elements that correspond
+    // to objects to import is more limited. It must be a fully-qualified path
+    // to the element (i.e., /producers/producer rather than just //producer).
+    $item_xpath = '/producers/producer';  // relative to document
+    $item_ID_xpath = 'sourceid';          // relative to item_xpath
+
+    $this->source = new MigrateSourceXML($items_url, $item_xpath, $item_ID_xpath,
+      $fields);
+
+    $this->destination = new MigrateDestinationNode('migrate_example_producer');
     $this->addFieldMapping('title', 'name')
          ->xpath('name');
     $this->addFieldMapping('uid', 'authorid')
@@ -790,6 +883,10 @@ class WineTableMigration extends AdvancedExampleMigration {
   }
 }
 
+/**
+ * This migration works with WinePrepMigration to make ensure auto_nodetitle
+ * is re-enabled if we disabled it.
+ */
 class WineFinishMigration extends MigrationBase {
   public function __construct() {
     parent::__construct(MigrateGroup::getInstance('wine', array('default')));
@@ -809,14 +906,14 @@ class WineFinishMigration extends MigrationBase {
     if (!module_exists('auto_nodetitle')) {
       if (WinePrepMigration::$wasEnabled) {
         module_enable(array('auto_nodetitle'));
-        $this->showMessage(t('Re-enabled auto_nodetitle module'), 'success');
+        self::displayMessage(t('Re-enabled auto_nodetitle module'), 'success');
       }
       else {
-        $this->showMessage(t('auto_nodetitle was not originally enabled'), 'success');
+        self::displayMessage(t('auto_nodetitle was not originally enabled'), 'success');
       }
     }
     else {
-      $this->showMessage(t('Auto_nodetitle module already enabled'), 'success');
+      self::displayMessage(t('Auto_nodetitle module already enabled'), 'success');
     }
     return Migration::RESULT_COMPLETED;
   }

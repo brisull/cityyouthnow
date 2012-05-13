@@ -84,23 +84,26 @@
 }
 
 .block-quotes {
-  font-size: 89%;
-  width: 60%;
+  font-size: .9em;
+  width: 80%;
   margin: auto;
+  margin-bottom:2em;
 }
 
+
+.block-quotes h2 {
+  text-align: center;
+}
 
 .block-quotes h3 {
-  padding-top: 1.5em;
   text-align: center;
   font-size: 110%;
-  clear:both;
+  clear: both;
 }
 
-.block-quotes .body p{
+.block-quotes p {
   margin-left: 1em;
-  margin-bottom: 1.5em;
-  clear: both;
+  margin-bottom: 0.25em;
 }
 
 .block-quotes .quotes-more-link {
@@ -109,10 +112,9 @@
 }
 
 .block-quotes .quotes-author {
-  
-  display:inline;
   padding-left: 1em;
   padding-right: 1em;
+  position: relative;
 }
 
 .block-quotes .quotes-citation {

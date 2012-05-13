@@ -17,7 +17,6 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
       'nid' => array(
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => TRUE,
         'description' => 'ID of destination node',
       ),
     );
@@ -41,7 +40,7 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
    * @param string $bundle
    *  A.k.a. the content type (page, article, etc.) of the node.
    * @param array $options
-+   *  Options applied to nodes.
+   *  Options applied to nodes.
    */
   public function __construct($bundle, array $options = array()) {
     parent::__construct('node', $bundle, $options);
@@ -67,7 +66,9 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
     $fields['promote'] = t('Node: Promoted to front page');
     $fields['sticky'] = t('Node: Sticky at top of lists');
     $fields['revision'] = t('Node: Create new revision');
+    $fields['log'] = t('Node: Revision Log message');
     $fields['language'] = t('Node: Language (fr, en, ...)');
+    $fields['tnid'] = t('Node: The translation set id for this node');
 
     $node_type = node_type_load($this->bundle);
     if ($node_type->has_title) {
@@ -128,7 +129,9 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
                    ->execute()
                    ->fetchAssoc();
       $node->vid = $values['vid'];
-      $node->tnid = $values['tnid'];
+      if (empty($row->tnid)) {
+        $node->tnid = $values['tnid'];
+      }
     }
     if ($migration->getSystemOfRecord() == Migration::DESTINATION) {
       if (!isset($node->nid)) {
@@ -148,10 +151,14 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
         $node->uid = $old_node->uid;
       }
     }
+    else if (!isset($node->type)) {
+      // Default the type to our designated destination bundle (by doing this
+      // conditionally, we permit some flexibility in terms of implementing
+      // migrations which can affect more than one type).
+      $node->type = $this->bundle;
+    }
 
     // Set some required properties.
-    // Set type before invoking prepare handlers - they may take type-dependent actions.
-    $node->type = $this->bundle;
 
     if ($migration->getSystemOfRecord() == Migration::SOURCE) {
       if (!isset($node->language)) {

@@ -18,7 +18,6 @@ class MigrateDestinationTerm extends MigrateDestinationEntity {
       'tid' => array(
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => TRUE,
         'description' => 'ID of destination term',
       ),
     );
@@ -66,8 +65,8 @@ class MigrateDestinationTerm extends MigrateDestinationEntity {
     $fields['parent'] = t('Term: Parent (by Drupal term ID)');
 
     // Then add in anything provided by handlers
-    $fields += migrate_handler_invoke_all('Entity', 'fields', $this->entityType, $this->bundle);
-    $fields += migrate_handler_invoke_all('Term', 'fields', $this->entityType, $this->bundle);
+    $fields += migrate_handler_invoke_all('entity', 'fields', $this->entityType, $this->bundle);
+    $fields += migrate_handler_invoke_all('taxonomy_term', 'fields', $this->entityType, $this->bundle);
 
     return $fields;
   }
@@ -180,7 +179,7 @@ class MigrateDestinationTerm extends MigrateDestinationEntity {
         // term_hierarchy table.
         unset($term->parent['arguments']);
       }
-      if (!isset($term->parent)) {
+      if (empty($term->parent)) {
         $term->parent = array(0);
       }
       if (!isset($term->format)) {

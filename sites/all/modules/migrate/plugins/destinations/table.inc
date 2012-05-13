@@ -115,6 +115,7 @@ class MigrateDestinationTable extends MigrateDestination {
 
     if ($migration->getSystemOfRecord() == Migration::DESTINATION) {
       foreach ($this->schema['primary key'] as $key) {
+        $primary_key[] = $key;
         if (!isset($entity->{$key})) {
           throw new MigrateException(t('System-of-record is DESTINATION, but no destination id provided'));
         }
@@ -142,6 +143,10 @@ class MigrateDestinationTable extends MigrateDestination {
       foreach ($this->schema['primary key'] as $key) {
         $id[] = $entity->{$key};
       }
+
+      // Increment the number of updated or inserted records by checking the
+      // result of drupal_write_record.
+      ($status == SAVED_NEW) ? $this->numCreated++ : $this->numUpdated++;
 
       return $id;
     }

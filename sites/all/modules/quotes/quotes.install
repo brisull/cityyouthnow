@@ -195,7 +195,8 @@ function quotes_schema() {
         ),
       'name' => array(
         'description' => 'Author of the quote.',
-        'type' => 'text',
+        'type' => 'varchar',
+        'length' => 255,
         'not null' => TRUE,
         ),
       'bio' => array(
@@ -206,7 +207,7 @@ function quotes_schema() {
       ),
     'primary key' => array('aid'),
     'unique keys' => array(
-      'name' => array(array('name', 255)),
+      'name' => array('name'),
       ),
     );
 
@@ -275,6 +276,52 @@ function _quotes_installed_instances() {
   $t = get_t();
   return array(
   );
+}
+
+/**
+ * Change table quotes_author column name from text to varchar 255.
+ * Change unique keys index to match name column.
+ */
+function quotes_update_7000() {
+  $sql =db_select('quotes_authors', 'qa');
+  $sql
+    ->fields('qa', array('aid', 'name'));
+  $q_alias = $sql -> leftjoin('quotes', 'q', "q.aid = qa.aid");
+  $count_alias = $sql->addExpression('COUNT(q.nid)', 'count');
+  $sql
+    ->groupBy('name')
+    ->orderBy('name', 'DESC');
+
+  $sql =db_select('quotes_authors', 'qa');
+  $sql
+    ->fields('qa', array('aid', 'name'));
+  $q_alias = $sql -> leftjoin('quotes', 'q', "q.aid = qa.aid");
+  $count_alias = $sql->addExpression('COUNT(q.nid)', 'count');
+  $sql
+    ->groupBy('name')
+    ->orderBy('name', 'DESC');
+
+  $result = $sql->execute()->fetchAll();
+  foreach ($result as $key => $value) {
+    $record = $value;
+    if (drupal_strlen($record->name) > 255) {
+      $toolong[] = $record->name;
+    }
+  }
+  if (isset($toolong)) {
+    if (count($toolong) < 2) {
+      $prefix = 'There is 1 author';
+    }
+    else {
+      $prefix = "There are " . count($toolong) . " authors";
+    }
+    throw new DrupalUpdateException($prefix . ' over 255 characters in lenght. After correcting this issue return to the update processor and run again.');
+    return;
+  }
+    db_drop_index('quotes_authors', 'name');
+    db_change_field('quotes_authors', 'name', 'name', array('type' => 'varchar', 'length' => 255, 'not null' => TRUE));
+    db_add_unique_key('quotes_authors', 'name', array('name'));
+
 }
 
 /**

@@ -20,6 +20,24 @@ class MigrateSQLMap extends MigrateMap {
   }
 
   /**
+   * Qualifying the map table name with the database name and any prefix makes
+   * cross-db joins possible. Note this will not work with prefixes - we will
+   * omit prepending the database name if we're in the default connection, just
+   * so we don't break simpletest.
+   *
+   * @return string
+   */
+  public function getQualifiedMapTable() {
+    if ($this->connection->getKey() != 'default') {
+      $options = $this->connection->getConnectionOptions();
+      return $options['database'] . '.' . $this->mapTable;
+    }
+    else {
+      return $this->mapTable;
+    }
+  }
+
+  /**
    * sourceKey and destinationKey arrays are keyed by the field names; values
    * are the Drupal schema definition for the field.
    *
@@ -83,7 +101,7 @@ class MigrateSQLMap extends MigrateMap {
         $count = 1;
         $source_key_schema = array();
         $pks = array();
-        foreach ($this->sourceKey as $field_name => $field_schema) {
+        foreach ($this->sourceKey as $field_schema) {
           $mapkey = 'sourceid' . $count++;
           $source_key_schema[$mapkey] = $field_schema;
           $pks[] = $mapkey;
@@ -94,7 +112,9 @@ class MigrateSQLMap extends MigrateMap {
         // Add destination keys to map table
         // TODO: How do we discover the destination schema?
         $count = 1;
-        foreach ($this->destinationKey as $field_name => $field_schema) {
+        foreach ($this->destinationKey as $field_schema) {
+          // Allow dest key fields to be NULL (for IGNORED/FAILED cases)
+          $field_schema['not null'] = FALSE;
           $mapkey = 'destid' . $count++;
           $fields[$mapkey] = $field_schema;
         }
@@ -103,8 +123,8 @@ class MigrateSQLMap extends MigrateMap {
           'size' => 'tiny',
           'unsigned' => TRUE,
           'not null' => TRUE,
-          'default' => (int) FALSE,
-          'description' => 'Flags existing mapped data to be updated',
+          'default' => MigrateMap::STATUS_IMPORTED,
+          'description' => 'Indicates current status of the source row',
         );
         $fields['last_imported'] = array(
           'type' => 'int',
@@ -193,6 +213,27 @@ class MigrateSQLMap extends MigrateMap {
   }
 
   /**
+   * Retrieve an array of map rows marked as needing update.
+   *
+   * @param int $count
+   *  Maximum rows to return; defaults to 10,000
+   * @return array
+   *  Array of map row objects with needs_update==1.
+   */
+  public function getRowsNeedingUpdate($count) {
+    $rows = array();
+    $result = db_select($this->mapTable, 'map')
+                      ->fields('map')
+                      ->condition('needs_update', MigrateMap::STATUS_NEEDS_UPDATE)
+                      ->range(0, $count)
+                      ->execute();
+    foreach ($result as $row) {
+      $rows[] = $row;
+    }
+    return $rows;
+  }
+
+  /**
    * Given a (possibly multi-field) destination key, return the (possibly multi-field)
    * source key mapped to it.
    *
@@ -239,23 +280,31 @@ class MigrateSQLMap extends MigrateMap {
   }
 
   /**
-   * Called upon successfully import of one record, we record a mapping from
+   * Called upon successful import of one record, we record a mapping from
    * the source key to the destination key. Also may be called, setting the
-   * third parameter to TRUE, to signal an existing record should be remigrated.
+   * third parameter to NEEDS_UPDATE, to signal an existing record should be remigrated.
    *
    * @param stdClass $source_row
    *  The raw source data. We use the key map derived from the source object
    *  to get the source key values.
    * @param array $dest_ids
    *  The destination key values.
-   * @param boolean $needs_update
-   *  Value for the needs_update field in the map. Defaults to FALSE.
+   * @param int $needs_update
+   *  Status of the source row in the map. Defaults to STATUS_IMPORTED.
    */
-  public function saveIDMapping(stdClass $source_row, array $dest_ids, $needs_update = FALSE) {
+  public function saveIDMapping(stdClass $source_row, array $dest_ids, $needs_update = MigrateMap::STATUS_IMPORTED) {
     migrate_instrument_start('saveIDMapping');
     // Construct the source key
     $keys = array();
     foreach ($this->sourceKeyMap as $field_name => $key_name) {
+      // A NULL key value will fail.
+      if (is_null($source_row->$field_name)) {
+        Migration::displayMessage(t(
+          'Could not save to map table due to NULL value for key field !field',
+          array('!field' => $field_name)));
+        migrate_instrument_stop('saveIDMapping');
+        return;
+      }
       $keys[$key_name] = $source_row->$field_name;
     }
 
@@ -304,7 +353,7 @@ class MigrateSQLMap extends MigrateMap {
     }
     else {
       // TODO: What else can we do?
-      print($message);
+      Migration::displayMessage($message);
     }
   }
 
@@ -315,13 +364,45 @@ class MigrateSQLMap extends MigrateMap {
    */
   public function prepareUpdate() {
     $this->connection->update($this->mapTable)
-    ->fields(array('needs_update' => 1))
+    ->fields(array('needs_update' => MigrateMap::STATUS_NEEDS_UPDATE))
     ->execute();
   }
 
+  /**
+   * Returns a count of records in the map table (i.e., the number of
+   * source records which have been processed for this migration).
+   *
+   * @return int
+   */
+  public function processedCount() {
+    $query = $this->connection->select($this->mapTable);
+    $query->addExpression('COUNT(*)', 'count');
+    $count = $query->execute()->fetchField();
+    return $count;
+  }
+
+  /**
+   * Returns a count of imported records in the map table.
+   *
+   * @return int
+   */
   public function importedCount() {
     $query = $this->connection->select($this->mapTable);
     $query->addExpression('COUNT(*)', 'count');
+    $query->condition('needs_update', array(MigrateMap::STATUS_IMPORTED, MigrateMap::STATUS_NEEDS_UPDATE), 'IN');
+    $count = $query->execute()->fetchField();
+    return $count;
+  }
+
+  /**
+   * Returns a count of records which are marked as needing update.
+   *
+   * @return int
+   */
+  public function updateCount() {
+    $query = $this->connection->select($this->mapTable);
+    $query->addExpression('COUNT(*)', 'count');
+    $query->condition('needs_update', MigrateMap::STATUS_NEEDS_UPDATE);
     $count = $query->execute()->fetchField();
     return $count;
   }
@@ -333,15 +414,9 @@ class MigrateSQLMap extends MigrateMap {
    *  Number of records errored out.
    */
   public function errorCount() {
-    $fields = array();
-    foreach ($this->sourceKeyMap as $field) {
-      $fields[] = $field;
-    }
-    $query = $this->connection->select($this->messageTable, 'msg')
-             ->fields('msg', $fields)
-             ->condition('msg.level', MigrationBase::MESSAGE_INFORMATIONAL, '<>')
-             ->distinct()
-             ->countQuery();
+    $query = $this->connection->select($this->mapTable);
+    $query->addExpression('COUNT(*)', 'count');
+    $query->condition('needs_update', MigrateMap::STATUS_FAILED);
     $count = $query->execute()->fetchField();
     return $count;
   }
@@ -414,7 +489,7 @@ class MigrateSQLMap extends MigrateMap {
    */
   public function setUpdate(array $source_key) {
     $query = $this->connection->update($this->mapTable)
-                              ->fields(array('needs_update' => 1));
+                              ->fields(array('needs_update' => MigrateMap::STATUS_NEEDS_UPDATE));
     $count = 1;
     foreach ($source_key as $key_value) {
       $query->condition('sourceid' . $count++, $key_value);
