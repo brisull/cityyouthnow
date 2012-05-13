@@ -5,15 +5,18 @@ function handleDonationAddOrEdit( form ) {
     var donor = form.find("#edit-field-donor-und-0-target-id");
     var donorLevel = form.find("#edit-field-donor-level-und");
     var amounts = form.find("#field-amount-values").find(".form-text");
+    function writeTitle() {
+        setTimeout( function() { title.val( year.val() +" - "+ donor.val() ); }, 500 );
+    }
     donor.parents(".form-item").find("label").append("<a href='/node#overlay=node/add/donor' target='_blank'>Add New Donor</a>");
     title.bind("focus", function() {
         jQuery(this).blur();
     });
     year.bind("change", function() {
-        title.val( year.val() +" - "+ donor.val() );
+        writeTitle()
     });
     donor.bind("change", function() {
-        title.val( year.val() +" - "+ donor.val() );
+        writeTitle();
     });
     amounts.bind("change", function() {
         var newAmount = 0;

@@ -35,7 +35,9 @@
     <?php print $page; ?>
   </div>
 </div>
+
 <script type="text/javascript">
+// Send the loaded overlay back to our script in cyn.js
 jQuery(document).ready( function() {
 		parent.window.overlay.overlayIsLoaded(jQuery("form:first")) ;
 });
