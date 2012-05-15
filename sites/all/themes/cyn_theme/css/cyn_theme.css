@@ -1270,6 +1270,25 @@ body.wysiwygeditor {
     color: #60513A;
     margin: 5px;
 }
+  
+.front .block-quotes p {
+    margin-left: 0px;
+    font-style: italic;
+}
+
+.front .block-quotes .quotes-author p {
+    font-style: normal;
+}
+
+.front .block-quotes h2 {
+    text-align: left;
+}
+
+.block-quotes .quotes-author {
+    position: static;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
 
 .sidebar .block-quotes .body p:before,
 .sidebar .block-quotes .body p:after {
