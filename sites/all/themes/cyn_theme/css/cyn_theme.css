@@ -1520,3 +1520,7 @@ ul.float-left-list {
 .page-node-133 #main-content {
     border-right: 0 !important;
 }
+
+#twtr-widget-1 .twtr-ft {
+    display: none;
+}
