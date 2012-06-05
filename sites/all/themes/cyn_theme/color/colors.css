@@ -98,7 +98,7 @@ tr.even {
 
 /* Footer */
 #footer {
-  background: #181818; /* fallback for browsers that don't support CSS gradients */
+  background: #FFF; /* fallback for browsers that don't support CSS gradients */
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#181818), to(#343434));
   background-image: -moz-linear-gradient(-90deg, #181818, #343434);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#181818', endColorstr='#343434')";
