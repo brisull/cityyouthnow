@@ -1,0 +1,78 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!--#include file="inc_head.html"-->
+</head>
+
+<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<table width="750" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tr>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+		<td width="700" valign="top">
+			<!--#include file="inc_header.html"-->
+			
+			<table width="700" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- middle content -->
+					<td width="438" valign="top">
+<img src="images/spacer.gif" width="438" height="1" /><br />
+
+
+<h1>The Green Room Party</h1>
+<h2>Buy tickets now</h2>
+<table width="400" border="0">
+  <tr>
+    <td><h2>TICKET PRICES</h2></td>
+    <td><h2>&nbsp;</h2></td>
+  </tr>
+  <tr>
+    <td>Individual Tickets</td>
+    <td>$125</td>
+  </tr>
+  <tr>
+    <td>Door</td>
+    <td>$150</td>
+  </tr>
+</table>
+<p>*Cash, VISA, MasterCard, and American Express will be accepted at the door.</p>
+<h2>Buy tickets now!</h2>
+<form name="PrePage" method = "post" action = "https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type = "hidden" name = "LinkId" value ="543aa4ee-e04d-48e8-803b-846f5f1fbaeb" /> <input type = "image" src ="//content.authorize.net/images/buy-now-blue.gif" /> </form>
+
+
+<h3>100% of the proceeds benefit City Youth Now.</h3>
+<!-- Raffle tickets -->
+<p>&nbsp;</p>
+<h2>Buy raffle tickets!</h2>
+<p>Buy raffle tickets &mdash; $20/each</p>
+<form name="PrePage" method = "post" action = "https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type = "hidden" name = "LinkId" value ="0571bb7c-f4a6-4bc2-bb79-8a2df5426373" /> <input type = "image" src ="//content.authorize.net/images/buy-now-blue.gif" /> </form> </form>
+
+<p>Buy Six raffle tickets &mdash; $100</p>
+<form name="PrePage" method = "post" action = "https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type = "hidden" name = "LinkId" value ="f10b08f2-3dbe-47bc-bd34-4648de94cd4e" /> <input type = "image" src ="//content.authorize.net/images/buy-now-blue.gif" /> </form>
+
+<p>If you're interested in <a href="sponsor.shtml">sponsoring the event</a>, please contact Elizabeth Fairbanks at 415-753-7576 or <a href="mailto:elizabeth@cityyouthnow.org">elizabeth@cityyouthnow.org</a>.<br /><br /></p>
+
+
+</td>
+					<td width="18" valign="top"><img src="images/spacer.gif" width="18" height="1" /></td>
+					<td width="1" valign="top"><img src="images/spacer.gif" width="1" height="1" /></td>
+					<td width="243" valign="top" class="bgRight">
+						<!--#include file="inc_right_home.html"-->
+					</td>
+				</tr>
+			</table>
+			
+			<!--#include file="inc_footer.html"-->
+		</td>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+	</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1746217-12");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!--#include file="inc_head.html"-->
+<script language="Javascript" type="text/javascript">
+<!--
+if (document.images){
+
+dinner_img_1 = new Image();
+dinner_img_1.src = "images/dinner01.jpg";
+dinner_img_2 = new Image();
+dinner_img_2.src = "images/dinner02.jpg";
+dinner_img_3 = new Image();
+dinner_img_3.src = "images/dinner03.jpg";
+dinner_img_4 = new Image();
+dinner_img_4.src = "images/dinner04.jpg";
+dinner_img_5 = new Image();
+dinner_img_5.src = "images/dinner05.jpg";
+dinner_img_6 = new Image();
+dinner_img_6.src = "images/dinner06.jpg";
+dinner_img_7 = new Image();
+dinner_img_7.src = "images/dinner07.jpg";
+dinner_img_8 = new Image();
+dinner_img_8.src = "images/dinner08.jpg";
+dinner_img_9 = new Image();
+dinner_img_9.src = "images/dinner09.jpg";
+dinner_img_10 = new Image();
+dinner_img_10.src = "images/dinner10.jpg";
+dinner_img_11 = new Image();
+dinner_img_11.src = "images/dinner11.jpg";
+dinner_img_12 = new Image();
+dinner_img_12.src = "images/dinner12.jpg";
+dinner_img_13 = new Image();
+dinner_img_13.src = "images/dinner13.jpg";
+dinner_img_14 = new Image();
+dinner_img_14.src = "images/dinner14.jpg";
+dinner_img_15 = new Image();
+dinner_img_15.src = "images/dinner15.jpg";
+dinner_img_16 = new Image();
+dinner_img_16.src = "images/dinner16.jpg";
+dinner_img_17 = new Image();
+dinner_img_17.src = "images/dinner17.jpg";
+dinner_img_18 = new Image();
+dinner_img_18.src = "images/dinner18.jpg";
+dinner_img_19 = new Image();
+dinner_img_19.src = "images/dinner19.jpg";
+dinner_img_20 = new Image();
+dinner_img_20.src = "images/dinner20.jpg";
+dinner_img_21 = new Image();
+dinner_img_21.src = "images/dinner21.jpg";
+dinner_img_22 = new Image();
+dinner_img_22.src = "images/dinner22.jpg";
+dinner_img_23 = new Image();
+dinner_img_23.src = "images/dinner23.jpg";
+dinner_img_24 = new Image();
+dinner_img_24.src = "images/dinner24.jpg";
+dinner_img_25 = new Image();
+dinner_img_25.src = "images/dinner25.jpg";
+dinner_img_26 = new Image();
+dinner_img_26.src = "images/dinner26.jpg";
+dinner_img_27 = new Image();
+dinner_img_27.src = "images/dinner27.jpg";
+dinner_img_28 = new Image();
+dinner_img_28.src = "images/dinner28.jpg";
+dinner_img_29 = new Image();
+dinner_img_29.src = "images/dinner29.jpg";
+dinner_img_30 = new Image();
+dinner_img_30.src = "images/dinner30.jpg";
+dinner_img_31 = new Image();
+dinner_img_31.src = "images/dinner31.jpg";
+dinner_img_32 = new Image();
+dinner_img_32.src = "images/dinner32.jpg";
+dinner_img_33 = new Image();
+dinner_img_33.src = "images/dinner33.jpg";
+dinner_img_34 = new Image();
+dinner_img_34.src = "images/dinner34.jpg";
+dinner_img_35 = new Image();
+dinner_img_35.src = "images/dinner35.jpg";
+dinner_img_36 = new Image();
+dinner_img_36.src = "images/dinner36.jpg";
+dinner_img_37 = new Image();
+dinner_img_37.src = "images/dinner37.jpg";
+
+}
+
+var dinner_no = 1;
+var DINNER_MIN = 1;    // MIN OF 1 IMAGES
+var DINNER_MAX = 36;   // MAX OF 36 IMAGES
+
+function dinner_prev () {
+  if (dinner_no > DINNER_MIN) {
+    dinner_no -= 1;
+    document.getElementById("dinner").src = eval("dinner_img_" + dinner_no).src;
+    document.getElementById("dinner_img_no").innerHTML = dinner_no;
+    dinner_active ();
+  }
+}
+
+function dinner_next () {
+  if (dinner_no < DINNER_MAX) {
+    dinner_no += 1;
+    document.getElementById("dinner").src = eval("dinner_img_" + dinner_no).src;
+    document.getElementById("dinner_img_no").innerHTML = dinner_no;
+    dinner_active ();
+  }
+}
+
+function dinner_active () {
+  if (dinner_no <= DINNER_MIN) document.getElementById("dinner_prev").disabled = true;
+  else document.getElementById("dinner_prev").disabled = false;
+  if (dinner_no >= DINNER_MAX) document.getElementById("dinner_next").disabled = true;
+  else document.getElementById("dinner_next").disabled = false;
+}
+
+var FIRST_IMG = 1;
+var LAST_IMG = 36;
+
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+    return 1;
+  else
+    return parseInt(results[1]);
+}
+-->
+</script>
+</head>
+
+<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<table width="750" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tr>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+		<td width="700" valign="top">
+			<!--#include file="inc_header2.html"-->
+			
+			<table width="700" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- middle content -->
+					<td width="438" valign="top">
+<img src="images/spacer.gif" width="438" height="1" /><br />
+
+<center>
+	<table cellpadding="3" cellspacing="0" border="0"><tr>
+	
+	<td valign="top" width="187"> 
+	  <p><br /><br /><FONT CLASS="header3"><strong>Photos from 2007 and 2006</strong></font></p>
+	  <p align="center">
+
+		<script language="javascript">
+		<!--
+		//var cur_img = gup( 'imgNo' );
+		//document.write ("<img name=\"dinner\" src=\"images/dinner" + (cur_img < 10? "0" : "") + cur_img + ".jpg\" border=\"0\" height=\"300\" width=\"400\"><br><br>");
+		//
+		//if (cur_img > FIRST_IMG) document.write ("<a href=\"?imgNo="+ (cur_img-1) +"\">&lt; Previous</a>");
+		//document.write (" &nbsp; &nbsp; ");
+		//document.write (cur_img + " of " + LAST_IMG);
+		//document.write (" &nbsp; &nbsp; ");
+		//if (cur_img < LAST_IMG) document.write ("<a href=\"?imgNo="+ (cur_img+1) +"\" >Next &gt;</a>");
+		-->
+		</script>
+		
+		<img name="dinner" id="dinner" src="images/dinner01.jpg" width="400" height="300" border="0"><br /><br />
+		
+                <a id="dinner_prev" href="javascript://" onclick="dinner_prev()">&lt; Previous </a> &nbsp; &nbsp;
+                <span id="dinner_img_no">1</span> of <script language="javascript">document.write (DINNER_MAX);</script> &nbsp; &nbsp;
+                <a id="dinner_next" href="javascript://" onclick="dinner_next()">Next &gt;</a>
+		<br>
+               
+
+	  <p align="center"><a href="index.shtml">Back to the 54th Annual Green Room Party</a><br>
+	  </p>
+	</td>
+	
+	</tr></table>
+
+
+					</td>
+					<td width="18" valign="top"><img src="images/spacer.gif" width="18" height="1" /></td>
+					<td width="1" valign="top"><img src="images/spacer.gif" width="1" height="1" /></td>
+					<td width="243" valign="top" class="bgRight">
+						<!--#include file="inc_right_sponsors-2008.html"-->
+					</td>
+				</tr>
+			</table>
+			
+			<!--#include file="inc_footer.html"-->
+		</td>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+	</tr>
+</table>
+</body>
+</html>

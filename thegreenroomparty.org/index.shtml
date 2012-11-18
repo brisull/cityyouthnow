@@ -1,0 +1,100 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+
+<!--#include file="inc_head.html"-->
+<style type="text/css">
+<!--
+.style1 {
+	color: #D5CDC6;
+	font-weight: bold;
+	font-size: 16;
+}
+.style2 {
+	font-size: 14px;
+	color: #D5CDC6;
+	font-weight: bold;
+}
+.style3 {color: #D5CDC6; font-weight: bold; font-size: 16px; }
+.style4 {color: #D5CDC6}
+.style7 {font-weight: bold}
+-->
+</style>
+</head>
+
+<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<table width="750" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tr>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+		<td width="700" valign="top">
+			<!--#include file="inc_header.html"-->
+			
+			<table width="700" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- middle content -->
+					<td width="438" valign="top">
+						<img src="images/spacer.gif" width="438" height="1" /><br />
+            <h1>Join us at our holiday red carpet affair</h1>
+            <p>Please join us for this festive and charitable event that raises funds to support San Francisco's youth in crisis. The Green Room's classic glamour sets the stage for raising essential funds and awareness for youth in San Francisco's Foster and Juvenile Justice Systems. Join us at the elegant and fabled Green Room as we toast the holidays and lend a helping hand to the youth of San Francisco!</p>
+            <p>General Admission $125</p>
+            <p>Corporate Sponsorship Levels Starting at $2500</p>
+            <p>Benefactor Levels Starting at $500</p>
+            
+            
+            
+            <h2>The Green Room Party</h2>
+            <!-- <h2>Mistress of Ceremonies, <a target="_blank" href="http://www.donnasachet.com" style="font-style: italic; font-size: 14px; color: #1595d3;">Donna Sachet</a></h2> -->
+            <ul>
+              <!-- <li>DJ Kevin Sound in Motion</li> -->
+              <li>Open Bar featuring beer, wine and spirits</li>
+              <li>Cocktail and Hors d'Oeuvres Reception</li>
+              <li>Raffle prizes include a weekend at Rancho Las Palmas in Palm Springs, a City Escape at the Clift Hotel, Gift certificates to Burke Williams Spa and E &amp; O Asian Kitchen</li>
+              <li>Live Music by Ben Kamber and Otway Ross</li>
+            </ul>
+            
+            <p>In its 58<sup>th</sup> year, The Green Room Party is one of San Francisco's most anticipated holiday parties. Originally hosted by a local philanthropic couple, the party soon outgrew the couple's home and was moved to the historic Green Room. All funds from this event directly benefit youth in the Foster Care and Juvenile Justice Systems in San Francisco by meeting their individual needs throughout the year. <strong>This gala event enables us to provide youth programs and services to thousands of children annually.</strong></p>
+
+            <h3>Raffle Prizes</h3>
+            <ul>
+            	<li>Weekend at the Clift Hotel with dinner at the Velvet Room</li>
+				<li>2 Nights at Bacara in Santa Barbara with a $100 gift certificate for the Bistro</li>
+				<li>Weekend at Las Palmas Resort in Palm Springs with Dinner and Golf for two</li>
+				<li>$100 Gift Certificate to E&O Asian Kitchen</li>
+				<li>$125 Gift Certificate to Burke Williams Spa</li>
+			</ul>
+
+			
+            <p>Event produced by:<br />
+            <img src="images/SanManProductions_FinalLogo.png" width="150" height="46" border="0" style="margin-top: 5px;" /></p>
+
+			<table width="438" cellspacing="0" cellpadding="0" border="0">
+				<tr valign="bottom">
+					<td width="146"><a href="http://www.cityyouthnow.org" target="_blank"><img border="0" alt="City Youth Now" src="images/cyn-logo-100x50.gif" style="padding-top: 20px;"></a><br /></td>
+			      <td width="146"></td>
+				    <td width="146"></td>
+			  </tr>
+			</table>
+			  <br /></td>
+				<td width="18" valign="top"><img src="images/spacer.gif" width="18" height="1" /></td>
+				<td width="1" valign="top"><img src="images/spacer.gif" width="1" height="1" /></td>
+				<td width="243" valign="top" class="bgRight">
+					<!--#include file="inc_right_home.html"-->					
+				</td>
+			</tr>
+		</table>
+			
+			<!--#include file="inc_footer.html"--></td>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1746217-12");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

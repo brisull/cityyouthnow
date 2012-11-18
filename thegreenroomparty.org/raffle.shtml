@@ -1,0 +1,101 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!--#include file="inc_head.html"-->
+</head>
+
+<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<table width="750" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tr>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+		<td width="700" valign="top">
+			<!--#include file="inc_header.html"-->
+			
+			<table width="700" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- middle content -->
+					<td width="438" valign="top">
+<img src="images/spacer.gif" width="438" height="1" /><br />
+
+<center>
+<p><b>Raffle Tickets</b></p>
+</center>
+
+<h3>Raffle tickets</h3>
+<ul><li>1 for &mdash; $20</li>
+    <form name="PrePage" method = "post" action = "https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type = "hidden" name = "LinkId" value ="0571bb7c-f4a6-4bc2-bb79-8a2df5426373" /> <input type = "image" src ="//content.authorize.net/images/buy-now-blue.gif" /> </form>
+<li>6 for &mdash; $100</li>
+    <form name="PrePage" method = "post" action = "https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type = "hidden" name = "LinkId" value ="f10b08f2-3dbe-47bc-bd34-4648de94cd4e" /> <input type = "image" src ="//content.authorize.net/images/buy-now-blue.gif" /> </form>
+</ul>
+
+<h2>City Youth Now</h2>
+<h3>Raffle Prizes</h3>
+
+<p>All Proceeds from this Raffle Will Be Used to Support Programs and Services 
+that Benefit At&mdash;Risk Youth in San Francisco</p>
+
+<p>Grand Prize: Wente Vineyard Two Night Experience &mdash; $2,000 Value<br/>
+2 Night Stay Wente's Cottage, Dinner  for 2 at The Restaurant at Wente Vineyards, Golf for 2 at The Course at Wente Vineyards and Complimentary Wine Tasting for 2 at three of Wente's Tasting Rooms: Wente Vineyards, Murrieta Well and Tamas</p>
+
+<h3>Beauty Bash at Benefit Cosmetics &mdash; $800 Value</h3>
+<p>Brows, Bubbles and Beauty... Oh My!<br />
+You will be the talk of the town when you host your own "Beauty Bash". You and your guests will have exclusive access to your local Benefit Cosmetics Boutique. Beauty Bashes Include: Bubbles, Bites, Make&mdash;uppers, Brow Shaping, Lash or Brow Tint, One&mdash;on&mdash;One Pampering. All Beauty Bashes are customizable in theme, size and time.</p>
+
+<h3>San Francisco City Escape &mdash; $300 Value</h3>
+<p>2 Orchestra tickets SF Ballet<br />
+Hotel Kabuki – one night stay with Japanese deep&mdash;tub bath</p>
+
+<h3>San Francisco City Escape 2 &mdash; $300 Value</h3>
+<p>Tickets for 2 Beach Blanket Babylon – Reserved Seats in the Producer's Row<br />
+$100 Gift Card for Perbacco Restaurant, 230 California Street, San Francisco<p>
+
+<h3>Pier 49 Family Fun Pack &mdash; Value $200</h3>
+<p>4 Tickets for Blue &amp; Gold Fleet Bay Cruise or RocketBoat Ride<br />
+4 Tickets  for Carousel Rides<br />
+4 Tickets for Magowan's Infinite Mirror Maze<br />
+4 Tickets for Aquarium of the Bay<br />
+2 Hour Validation for Pier 39 Parking Garage</p>
+
+<h3>Laurel Beauty Lab Hair Cut and Color &mdash; $200 Value</h3>
+<p>An appointment only, private, hair studio located in the heart of the Financial District of San Francisco.</p>
+
+<h3>Cabot Cheese Gift Box &mdash; $75.00 value</h3>
+<p>7 Varieties of Vermont Cabot Cheese<br />
+Wooden cutting board<br />
+Embroidered apron</p>
+
+
+<br />
+<center><img src="images/pixel_red.gif" width="438" height="1" /></center>
+
+</p>
+<br />
+In keeping with IRS regulations, the fair-market
+value of certain benefits and privileges may reduce the tax
+deductibility of your gifts. The value of these benefits will be noted
+in City Youth Now's acknowledgment of your gift.
+<br /><br />
+					</td>
+					<td width="18" valign="top"><img src="images/spacer.gif" width="18" height="1" /></td>
+					<td width="1" valign="top"><img src="images/spacer.gif" width="1" height="1" /></td>
+					<td width="243" valign="top" class="bgRight">
+						<!--#include file="inc_right_home.html"-->
+					</td>
+				</tr>
+			</table>
+			
+			<!--#include file="inc_footer.html"-->
+		</td>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+	</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1746217-12");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

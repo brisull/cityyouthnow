@@ -1,0 +1,133 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!--#include file="inc_head.html"-->
+</head>
+
+<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<table width="750" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tr>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+		<td width="700" valign="top">
+			<!--#include file="inc_header.html"-->
+			
+			<table width="700" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- middle content -->
+					<td width="438" valign="top">
+<img src="images/spacer.gif" width="438" height="1" /><br />
+
+
+<h1>Sponsor the Event</h1>
+<h2>Sponsorship Levels</h2>
+<p>The Green Room Party provides a variety of ways for individuals and companies to participate. Please review the information below and decide which of these opportunities best reflects your interest and concern for the children of San Francisco. You may become a Sponsor or Benefactor for the event by contacting Elizabeth Fairbanks at <a href="mailto:elizabeth@cityyouthnow.org">elizabeth@cityyouthnow.org</a> or by calling 415-753-7576.</p>
+
+
+<h2>Benefactors</h2>
+<p>Benefactors will be recognized at the event and included in printed material if received by October 1.</p>
+
+
+<h3>Platinum &mdash; $2500</h3>
+<ul><li>8 tickets and 8 raffle tickets</li></ul>
+<form name="PrePage" method="post" action="https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type="hidden" name="LinkId" value ="4e1f609c-c25d-4021-9a4d-868e4a67f163" /> <input type="image" src ="//content.authorize.net/images/buy-now-blue.gif" /> </form>
+
+<h3>Gold &mdash; $1500</h3>
+<ul><li>6 tickets and 6 raffle tickets</li></ul>
+<form name="PrePage" method="post" action="https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type="hidden" name="LinkId" value ="a356a135-9f20-4998-82f5-57cb81b92250" /> <input type="image" src ="//content.authorize.net/images/buy-now-blue.gif" /> </form>
+
+<h3>Silver &mdash; $1000</h3>
+<ul><li>4 tickets and 4 raffle tickets</li></ul>
+<form name="PrePage" method="post" action="https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type="hidden" name="LinkId" value="d320ebcc-23d0-4cdb-aa09-1881e258915f" /> <input type="image" src="//content.authorize.net/images/buy-now-blue.gif" />
+</form>
+
+
+<h3>Bronze &mdash; $500</h3>
+<ul><li>2 tickets and 2 raffle tickets</li></ul>
+<form name="PrePage" method="post" action="https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> <input type="hidden" name="LinkId" value ="2c01ff69-7781-4963-b031-a6f48881754a" /> <input type="image" src="//content.authorize.net/images/buy-now-blue.gif" /> </form>
+
+<center><img src="images/pixel_gold_dark.gif" width="438" height="1" /></center>
+<a name="sponsorship"></a>
+
+<!--<p>Yes, my business will sponsor The Green Room Party-Vintage Hollywood as </p>
+
+<center><img src="images/pixel_gold_dark.gif" width="438" height="1" /></center>
+-->
+<a name="sponsorship"></a>
+<h2>Presenting Sponsor &mdash; $25,000</h2>
+<ul>
+    <li>Exclusive Presenting Sponsor title</li>
+    <li>Opportunity for On-site Reception Activation</li>
+    <li>Prominent placement of your company logo on event collateral and advertising including: posters, invitations, advertisements, signs, e-blasts, Web site &amp; on-stage.</li>
+    <li>Stage Acknowledgement</li>
+    <li>Press Release Inclusion</li>
+    <li>Raffle Item Opportunity</li>
+    <li>VIP Tickets for 20 Guests</li>
+    <li>Reserved Seating</li>
+
+</ul>
+
+<center><img src="images/pixel_gold_dark.gif" width="438" height="1" /></center>
+
+<h2>Major Sponsor &mdash; $10,000</h2>
+
+<ul>
+    <li>Placement of your company logo on event collateral and advertising including: posters, invitations, advertisements, signs, e-blasts &amp; Web site.</li>
+    <li>Stage Acknowledgement</li>
+    <li>Press Release Inclusion</li>
+    <li>Raffle Item Opportunity</li>
+    <li>VIP tickets for 10 guests</li>
+    <li>Reserved Seating</li>
+
+</ul>
+
+<center><img src="images/pixel_gold_dark.gif" width="438" height="1" /></center>
+
+<h2>Sponsor &mdash; $5,000</h2>
+<ul>
+    <li>Company Word-Mark on event collateral and advertising including: posters, invitations, advertisements, signs, e-blasts &amp;amp; Web site.</li>
+    <li>Stage Acknowledgement</li>
+    <li>Press Release Inclusion</li>
+    <li>Raffle Item Opportunity</li>
+    <li>VIP tickets for 6 guests</li>
+</ul>
+
+<center><img src="images/pixel_gold_dark.gif" width="438" height="1" /></center>
+
+<h2>Associate Sponsor &mdash; $2,500</h2>
+<ul>
+	
+    <li>Company Word-Mark on event collateral and advertising including: posters, invitations, advertisements, signs, e-blasts &amp; Web site.</li>
+    <li>Raffle Item Opportunity</li>
+    <li>VIP tickets for 4 guests</li>
+</ul>
+
+<center><img src="images/pixel_gold_dark.gif" width="438" height="1" /></center>
+
+<p>Benefits based on value of sponsorship, and can be adjusted to meet your corporate marketing and promotional goals. In-Kind donations are valued at 50% retail value. We invite you to contact us to discuss the benefits of annual sponsorship as well.</p>
+
+
+
+</td>
+					<td width="18" valign="top"><img src="images/spacer.gif" width="18" height="1" /></td>
+					<td width="1" valign="top"><img src="images/spacer.gif" width="1" height="1" /></td>
+					<td width="243" valign="top" class="bgRight">
+						<!--#include file="inc_right_home.html"-->
+					</td>
+				</tr>
+			</table>
+			
+			<!--#include file="inc_footer.html"-->
+		</td>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+	</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1746217-12");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

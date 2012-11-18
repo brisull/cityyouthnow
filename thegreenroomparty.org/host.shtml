@@ -1,0 +1,49 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!--#include file="inc_head.html"-->
+</head>
+
+<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<table width="750" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tr>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+		<td width="700" valign="top">
+			<!--#include file="inc_header.html"-->
+			
+			<table width="700" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- middle content -->
+					<td width="438" valign="top">
+<img src="images/spacer.gif" width="438" height="1" /><br />
+
+<h1>The Host: City Youth Now</h1>
+<p>In a world of red tape, big talk and budget nightmares, City Youth Now makes things happen for dependent and delinquent youth in San Francisco. When a foster youth needs eyeglasses, City Youth Now purchases them. When a youth needs help starting college, City Youth Now is there to help them register for classes and purchase textbooks. When a youth is transitioning out of juvenile detention, City Youth Now sets them up with an internship to learn vocational and life skills. For 62 years, we have been stepping in to provide everything from clothing to job experience for youth in San Francisco.</p>
+
+<p>Even in times of prosperity, the system struggles to help these youth who have nowhere else to turn but to City Youth Now. Now, in these times of recession, City Youth Now is needed more than ever. We are the only program of our kind in San Francisco, and we are there on a day-to-day basis to ensure San Francisco's youth in crisis are not forgotten. Learn more about what we do at <a href="http://www.cityyouthnow.org" target="_blank">www.cityyouthnow.org</a>.<br /><br /></p>
+
+
+</td>
+					<td width="18" valign="top"><img src="images/spacer.gif" width="18" height="1" /></td>
+					<td width="1" valign="top"><img src="images/spacer.gif" width="1" height="1" /></td>
+					<td width="243" valign="top" class="bgRight">
+						<!--#include file="inc_right_home.html"-->
+					</td>
+				</tr>
+			</table>
+			
+			<!--#include file="inc_footer.html"-->
+		</td>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+	</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1746217-12");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

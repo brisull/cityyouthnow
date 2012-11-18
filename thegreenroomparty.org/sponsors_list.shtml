@@ -1,0 +1,93 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!--#include file="inc_head.html"-->
+</head>
+
+<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<table width="750" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tr>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+		<td width="700" valign="top">
+			<!--#include file="inc_header.html"-->
+			
+			<table width="700" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<!-- middle content -->
+					<td width="438" valign="top">
+<img src="images/spacer.gif" width="438" height="1" /><br />
+
+
+<h1>2012 Sponsors and Benefactors</h1>
+
+<h2>Benefactors</h2>
+
+<h3>Gold</h3>
+<p>
+	Margaret Coyne &amp; Tom Paoli
+</p>
+
+<h3>Silver</h3>
+<p>
+	David &amp; Mary Bloom<br />
+	Leigh Davenport-deBoer &amp; James deBoer<br />
+	Jeff Holl<br />
+	Paul McIntyre &amp; Kevin Goldson<br />
+	Jen Thompson &amp; Terry Alvey<br />
+	Laura &amp; James Ward
+</p>
+
+
+<h3>Bronze</h3>
+<p>
+	Kate &amp; Michael Coyne<br />
+	Norm Dito &amp; Steve Weiner<br />
+	Brendan Finley<br />
+	Linda Jackson<br />
+	Sally &amp; James Klingbeil<br />
+	Connie Krosney<br />
+	Adriene &amp; Steve Roche<br />
+	Yvonee &amp; Angelo Sangiacomo<br />
+	Lanelle &amp; Michael Santimauro<br />
+	Jessica Starr<br />
+	Kevin Sullivan<br />
+	Greg Suhr
+</p>
+
+<h3>In-Kind Donations</h3>
+<p>
+Bacara Resort &amp; Bistro Restaurant<br />
+Burke Williams Spa<br />
+The Clift Hotel<br />
+E&amp;O Asian Kitchen<br />
+Rancho Las Palmas<br />
+The San Francisco Ballet<br />
+The Velvet Room<br />
+</p>
+
+  <br /><br /><br />
+
+</td>
+					<td width="18" valign="top"><img src="images/spacer.gif" width="18" height="1" /></td>
+					<td width="1" valign="top"><img src="images/spacer.gif" width="1" height="1" /></td>
+					<td width="243" valign="top" class="bgRight">
+						<!--#include file="inc_right_home.html"-->
+					</td>
+				</tr>
+			</table>
+			
+			<!--#include file="inc_footer.html"-->
+		</td>
+		<td width="25" valign="top"><img src="images/spacer.gif" width="25" height="1" /></td>
+	</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1746217-12");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
