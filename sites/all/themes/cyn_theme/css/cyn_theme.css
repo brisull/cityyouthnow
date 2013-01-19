@@ -1526,3 +1526,7 @@ ul.float-left-list {
 #twtr-widget-1 .twtr-ft {
     display: none;
 }
+
+.region-sidebar-second .slide > img {
+    min-width: 150px;
+}

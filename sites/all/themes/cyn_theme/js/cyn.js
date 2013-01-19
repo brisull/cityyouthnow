@@ -61,8 +61,6 @@ jQuery(document).ready( function() {
       setTimeout( function() {
           jQuery("#main-content").css("height",jQuery("#columns").css("height") );
           jQuery(".front .region-sidebar-first").css("height",jQuery("#columns").css("height") );
-
-          console.log(jQuery("#columns").css("height"));
         }, 500 );
     }
       else if ( parseInt( jQuery(window).width() ) < 768  ) {
