@@ -61,7 +61,7 @@ jQuery(document).ready( function() {
       setTimeout( function() {
           jQuery("#main-content").css("height",jQuery("#columns").css("height") );
           jQuery(".front .region-sidebar-first").css("height",jQuery("#columns").css("height") );
-        }, 500 );
+        }, 1000 );
     }
       else if ( parseInt( jQuery(window).width() ) < 768  ) {
           jQuery("#main-content").css( "height","auto" );
