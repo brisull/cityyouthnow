@@ -58,11 +58,15 @@ function handleDonationAddOrEdit( form ) {
 
 jQuery(document).ready( function() {
     if ( parseInt( jQuery(window).width() ) > 768  ) {
-        jQuery("#main-content").css("height",jQuery("#columns").css("height") );
-        jQuery(".front .region-sidebar-first").css("height",jQuery("#columns").css("height") );
+      setTimeout( function() {
+          jQuery("#main-content").css("height",jQuery("#columns").css("height") );
+          jQuery(".front .region-sidebar-first").css("height",jQuery("#columns").css("height") );
+
+          console.log(jQuery("#columns").css("height"));
+        }, 500 );
     }
-    else if ( parseInt( jQuery(window).width() ) < 768  ) {
-        jQuery("#main-content").css( "height","auto" );
+      else if ( parseInt( jQuery(window).width() ) < 768  ) {
+          jQuery("#main-content").css( "height","auto" );
         jQuery(".front .region-sidebar-first").css("height","auto" );
     }
     jQuery(window).resize(function() {
