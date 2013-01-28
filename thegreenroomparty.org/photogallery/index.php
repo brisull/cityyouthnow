@@ -26,7 +26,7 @@
     </style>
     <body>
         <div class="albumbar">
-            <span>2011 City Youth Now Green Room Party - <a href="http://smu.gs/tnH8Fc" target="_blank">Click Here To Purchase Photos</a></span>
+            <span>2012 City Youth Now Green Room Party</span>
             <div id="albumSelect" class="albumSelect">
                 <ul>
                     <?php
@@ -70,7 +70,8 @@
                  </span>
         </div>
         <!-- The JavaScript -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
         <script type="text/javascript" src="jquery.gallery.js"></script>
     </body>
 </html>
